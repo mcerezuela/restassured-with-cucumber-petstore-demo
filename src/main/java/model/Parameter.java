@@ -1,8 +1,54 @@
 package model;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.XPath;
+import javafx.css.StyleableBooleanProperty;
+
 import java.util.Map;
 
 public class Parameter {
+    /**
+     * REQUIRED. The name of the parameter. Parameter names are case sensitive.
+     *
+     * If in is "path", the name field MUST correspond to a template expression occurring within the path field in the
+     * Paths Object. See Path Templating for further information.
+     *
+     * If in is "header" and the name field is "Accept", "Content-Type" or "Authorization", the parameter definition
+     * SHALL be ignored.
+     *
+     * For all other cases, the name corresponds to the parameter name used by the in property.
+     */
+    private String name;
+
+    /**
+     * REQUIRED. The location of the parameter. Possible values are "query", "header", "path" or "cookie".
+     */
+    private String in;
+
+    /**
+     * A brief description of the parameter. This could contain examples of use. CommonMark syntax MAY be used for
+     * rich text representation.
+     */
+    private String description;
+
+    /**
+     * Determines whether this parameter is mandatory. If the parameter location is "path", this property is REQUIRED
+     * and its value MUST be true. Otherwise, the property MAY be included and its default value is false.
+     */
+    private boolean required;
+
+    /**
+     * Specifies that a parameter is deprecated and SHOULD be transitioned out of usage. Default value is false.
+     */
+    private boolean deprecated;
+
+    /**
+     * Sets the ability to pass empty-valued parameters. This is valid only for query parameters and allows sending a
+     * parameter with an empty value. Default value is false. If style is used, and if behavior is n/a (cannot be
+     * serialized), the value of allowEmptyValue SHALL be ignored. Use of this property is NOT RECOMMENDED, as it is
+     * likely to be removed in a later revision.
+     */
+    private boolean allowEmptyValue;
+
     /**
      * Describes how the parameter value will be serialized depending on the type of the parameter value. Default
      * values (based on value of in): for query - form; for path - simple; for header - simple; for cookie - form.
@@ -44,6 +90,54 @@ public class Parameter {
      * provided by the schema.
      */
     private Map<String, Example> examples;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getIn() {
+        return in;
+    }
+
+    public void setIn(String in) {
+        this.in = in;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
+    }
+
+    public boolean isDeprecated() {
+        return deprecated;
+    }
+
+    public void setDeprecated(boolean deprecated) {
+        this.deprecated = deprecated;
+    }
+
+    public boolean isAllowEmptyValue() {
+        return allowEmptyValue;
+    }
+
+    public void setAllowEmptyValue(boolean allowEmptyValue) {
+        this.allowEmptyValue = allowEmptyValue;
+    }
 
     public String getStyle() {
         return style;
