@@ -23,4 +23,28 @@ public class Server {
      * A map between a variable name and its value. The value is used for substitution in the server's URL template.
      */
     private Map<String, ServerVariable> variables;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Map<String, ServerVariable> getVariables() {
+        return variables;
+    }
+
+    public void setVariables(Map<String, ServerVariable> variables) {
+        this.variables = variables;
+    }
 }

@@ -147,4 +147,284 @@ public class Schema {
      * Specifies that a schema is deprecated and SHOULD be transitioned out of usage. Default value is false.
      */
     private boolean deprecated;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getMultipleOf() {
+        return multipleOf;
+    }
+
+    public void setMultipleOf(int multipleOf) {
+        this.multipleOf = multipleOf;
+    }
+
+    public int getMaximum() {
+        return maximum;
+    }
+
+    public void setMaximum(int maximum) {
+        this.maximum = maximum;
+    }
+
+    public boolean isExclusiveMaximum() {
+        return exclusiveMaximum;
+    }
+
+    public void setExclusiveMaximum(boolean exclusiveMaximum) {
+        this.exclusiveMaximum = exclusiveMaximum;
+    }
+
+    public int getMinimum() {
+        return minimum;
+    }
+
+    public void setMinimum(int minimum) {
+        this.minimum = minimum;
+    }
+
+    public boolean isExclusiveMinimum() {
+        return exclusiveMinimum;
+    }
+
+    public void setExclusiveMinimum(boolean exclusiveMinimum) {
+        this.exclusiveMinimum = exclusiveMinimum;
+    }
+
+    public int getMaxLength() {
+        return maxLength;
+    }
+
+    public void setMaxLength(int maxLength) {
+        this.maxLength = maxLength;
+    }
+
+    public int getMinLength() {
+        return minLength;
+    }
+
+    public void setMinLength(int minLength) {
+        this.minLength = minLength;
+    }
+
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
+
+    public int getMaxItems() {
+        return maxItems;
+    }
+
+    public void setMaxItems(int maxItems) {
+        this.maxItems = maxItems;
+    }
+
+    public int getMinItems() {
+        return minItems;
+    }
+
+    public void setMinItems(int minItems) {
+        this.minItems = minItems;
+    }
+
+    public boolean isUniqueItems() {
+        return uniqueItems;
+    }
+
+    public void setUniqueItems(boolean uniqueItems) {
+        this.uniqueItems = uniqueItems;
+    }
+
+    public int getMaxProperties() {
+        return maxProperties;
+    }
+
+    public void setMaxProperties(int maxProperties) {
+        this.maxProperties = maxProperties;
+    }
+
+    public int getMinProperties() {
+        return minProperties;
+    }
+
+    public void setMinProperties(int minProperties) {
+        this.minProperties = minProperties;
+    }
+
+    public String[] getRequired() {
+        return required;
+    }
+
+    public void setRequired(String[] required) {
+        this.required = required;
+    }
+
+    public String[] getEnum() {
+        return _enum;
+    }
+
+    public void setEnum(String[] _enum) {
+        this._enum = _enum;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Schema[] getAllOf() {
+        return allOf;
+    }
+
+    public void setAllOf(Schema[] allOf) {
+        this.allOf = allOf;
+    }
+
+    public Schema[] getOneOf() {
+        return oneOf;
+    }
+
+    public void setOneOf(Schema[] oneOf) {
+        this.oneOf = oneOf;
+    }
+
+    public Schema[] getAnyOf() {
+        return anyOf;
+    }
+
+    public void setAnyOf(Schema[] anyOf) {
+        this.anyOf = anyOf;
+    }
+
+    public Schema getNot() {
+        return not;
+    }
+
+    public void setNot(Schema not) {
+        this.not = not;
+    }
+
+    public Schema getItems() {
+        return items;
+    }
+
+    public void setItems(Schema items) {
+        this.items = items;
+    }
+
+    public Schema getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Schema properties) {
+        this.properties = properties;
+    }
+
+    public Schema getAdditionalProperties() {
+        return additionalProperties;
+    }
+
+    public void setAdditionalProperties(Schema additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public Object getDefault() {
+        return _default;
+    }
+
+    public void setDefault(Object _default) {
+        this._default = _default;
+    }
+
+    public boolean isNullable() {
+        return nullable;
+    }
+
+    public void setNullable(boolean nullable) {
+        this.nullable = nullable;
+    }
+
+    public Discriminator getDiscriminator() {
+        return discriminator;
+    }
+
+    public void setDiscriminator(Discriminator discriminator) {
+        this.discriminator = discriminator;
+    }
+
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
+    }
+
+    public boolean isWriteOnly() {
+        return writeOnly;
+    }
+
+    public void setWriteOnly(boolean writeOnly) {
+        this.writeOnly = writeOnly;
+    }
+
+    public XML getXml() {
+        return xml;
+    }
+
+    public void setXml(XML xml) {
+        this.xml = xml;
+    }
+
+    public ExternalDocumentation getExternalDocs() {
+        return externalDocs;
+    }
+
+    public void setExternalDocs(ExternalDocumentation externalDocs) {
+        this.externalDocs = externalDocs;
+    }
+
+    public Object getExample() {
+        return example;
+    }
+
+    public void setExample(Object example) {
+        this.example = example;
+    }
+
+    public boolean isDeprecated() {
+        return deprecated;
+    }
+
+    public void setDeprecated(boolean deprecated) {
+        this.deprecated = deprecated;
+    }
 }

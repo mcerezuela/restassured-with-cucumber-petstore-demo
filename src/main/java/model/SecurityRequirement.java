@@ -25,4 +25,20 @@ public class SecurityRequirement {
      *
      */
     private String securityScheme;
+
+    public String[] getRequirements() {
+        return requirements;
+    }
+
+    public void setRequirements(String[] requirements) {
+        this.requirements = requirements;
+    }
+
+    public String getSecurityScheme() {
+        return securityScheme;
+    }
+
+    public void setSecurityScheme(String securityScheme) {
+        this.securityScheme = securityScheme;
+    }
 }

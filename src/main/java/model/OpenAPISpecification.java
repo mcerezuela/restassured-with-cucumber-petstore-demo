@@ -52,4 +52,68 @@ public class OpenAPISpecification {
      * Additional external documentation.
      */
     private ExternalDocumentation externalDocs;
+
+    public String getOpenapi() {
+        return openapi;
+    }
+
+    public void setOpenapi(String openapi) {
+        this.openapi = openapi;
+    }
+
+    public Info getInfo() {
+        return info;
+    }
+
+    public void setInfo(Info info) {
+        this.info = info;
+    }
+
+    public Server[] getServers() {
+        return servers;
+    }
+
+    public void setServers(Server[] servers) {
+        this.servers = servers;
+    }
+
+    public Paths getPaths() {
+        return paths;
+    }
+
+    public void setPaths(Paths paths) {
+        this.paths = paths;
+    }
+
+    public Components getComponents() {
+        return components;
+    }
+
+    public void setComponents(Components components) {
+        this.components = components;
+    }
+
+    public SecurityRequirement[] getSecurity() {
+        return security;
+    }
+
+    public void setSecurity(SecurityRequirement[] security) {
+        this.security = security;
+    }
+
+    public Tag[] getTags() {
+        return tags;
+    }
+
+    public void setTags(Tag[] tags) {
+        this.tags = tags;
+    }
+
+    public ExternalDocumentation getExternalDocs() {
+        return externalDocs;
+    }
+
+    public void setExternalDocs(ExternalDocumentation externalDocs) {
+        this.externalDocs = externalDocs;
+    }
 }

@@ -30,4 +30,36 @@ public class Response {
      * link, following the naming constraints of the names for Component Objects.
      */
     private Map<String, Link> links;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Map<String, Header> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(Map<String, Header> headers) {
+        this.headers = headers;
+    }
+
+    public Map<String, MediaType> getContent() {
+        return content;
+    }
+
+    public void setContent(Map<String, MediaType> content) {
+        this.content = content;
+    }
+
+    public Map<String, Link> getLinks() {
+        return links;
+    }
+
+    public void setLinks(Map<String, Link> links) {
+        this.links = links;
+    }
 }

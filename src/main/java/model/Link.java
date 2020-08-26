@@ -50,4 +50,51 @@ public class Link {
      */
     private Server server;
 
+    public String getOperationRef() {
+        return operationRef;
+    }
+
+    public void setOperationRef(String operationRef) {
+        this.operationRef = operationRef;
+    }
+
+    public String getOperationId() {
+        return operationId;
+    }
+
+    public void setOperationId(String operationId) {
+        this.operationId = operationId;
+    }
+
+    public Map<String, Object> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(Map<String, Object> parameters) {
+        this.parameters = parameters;
+    }
+
+    public Object getRequestBody() {
+        return requestBody;
+    }
+
+    public void setRequestBody(Object requestBody) {
+        this.requestBody = requestBody;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Server getServer() {
+        return server;
+    }
+
+    public void setServer(Server server) {
+        this.server = server;
+    }
 }

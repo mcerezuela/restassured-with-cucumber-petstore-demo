@@ -20,4 +20,20 @@ public class Discriminator {
      * An object to hold mappings between payload values and schema names or references.
      */
     private Map<String, String> mapping;
+
+    public String getPropertyName() {
+        return propertyName;
+    }
+
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName;
+    }
+
+    public Map<String, String> getMapping() {
+        return mapping;
+    }
+
+    public void setMapping(Map<String, String> mapping) {
+        this.mapping = mapping;
+    }
 }

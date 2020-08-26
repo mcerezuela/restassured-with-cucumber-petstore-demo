@@ -46,4 +46,44 @@ public class Encoding {
      * SHALL be ignored if the request body media type is not application/x-www-form-urlencoded.
      */
     private boolean allowReserved;
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public Map<String, Header> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(Map<String, Header> headers) {
+        this.headers = headers;
+    }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public boolean isExplode() {
+        return explode;
+    }
+
+    public void setExplode(boolean explode) {
+        this.explode = explode;
+    }
+
+    public boolean isAllowReserved() {
+        return allowReserved;
+    }
+
+    public void setAllowReserved(boolean allowReserved) {
+        this.allowReserved = allowReserved;
+    }
 }

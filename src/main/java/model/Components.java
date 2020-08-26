@@ -47,4 +47,76 @@ public class Components {
      * An object to hold reusable Callback Objects.
      */
     private Map<String, Callback> callbacks;
+
+    public Map<String, Schema> getSchemas() {
+        return schemas;
+    }
+
+    public void setSchemas(Map<String, Schema> schemas) {
+        this.schemas = schemas;
+    }
+
+    public Map<String, Response> getResponses() {
+        return responses;
+    }
+
+    public void setResponses(Map<String, Response> responses) {
+        this.responses = responses;
+    }
+
+    public Map<String, Parameter> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(Map<String, Parameter> parameters) {
+        this.parameters = parameters;
+    }
+
+    public Map<String, Example> getExamples() {
+        return examples;
+    }
+
+    public void setExamples(Map<String, Example> examples) {
+        this.examples = examples;
+    }
+
+    public Map<String, RequestBody> getRequestBodies() {
+        return requestBodies;
+    }
+
+    public void setRequestBodies(Map<String, RequestBody> requestBodies) {
+        this.requestBodies = requestBodies;
+    }
+
+    public Map<String, Header> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(Map<String, Header> headers) {
+        this.headers = headers;
+    }
+
+    public Map<String, SecurityScheme> getSecuritySchemes() {
+        return securitySchemes;
+    }
+
+    public void setSecuritySchemes(Map<String, SecurityScheme> securitySchemes) {
+        this.securitySchemes = securitySchemes;
+    }
+
+    public Map<String, Link> getLinks() {
+        return links;
+    }
+
+    public void setLinks(Map<String, Link> links) {
+        this.links = links;
+    }
+
+    public Map<String, Callback> getCallbacks() {
+        return callbacks;
+    }
+
+    public void setCallbacks(Map<String, Callback> callbacks) {
+        this.callbacks = callbacks;
+    }
 }

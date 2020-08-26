@@ -81,4 +81,100 @@ public class Operation {
      * Path Item Object or Root level, it will be overridden by this value.
      */
     private Server[] servers;
+
+    public String[] getTags() {
+        return tags;
+    }
+
+    public void setTags(String[] tags) {
+        this.tags = tags;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public ExternalDocumentation getExternalDocs() {
+        return externalDocs;
+    }
+
+    public void setExternalDocs(ExternalDocumentation externalDocs) {
+        this.externalDocs = externalDocs;
+    }
+
+    public String getOperationId() {
+        return operationId;
+    }
+
+    public void setOperationId(String operationId) {
+        this.operationId = operationId;
+    }
+
+    public Parameter[] getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(Parameter[] parameters) {
+        this.parameters = parameters;
+    }
+
+    public Request getRequestBody() {
+        return requestBody;
+    }
+
+    public void setRequestBody(Request requestBody) {
+        this.requestBody = requestBody;
+    }
+
+    public Responses getResponses() {
+        return responses;
+    }
+
+    public void setResponses(Responses responses) {
+        this.responses = responses;
+    }
+
+    public Map<String, Callback> getCallbacks() {
+        return callbacks;
+    }
+
+    public void setCallbacks(Map<String, Callback> callbacks) {
+        this.callbacks = callbacks;
+    }
+
+    public boolean isDeprecated() {
+        return deprecated;
+    }
+
+    public void setDeprecated(boolean deprecated) {
+        this.deprecated = deprecated;
+    }
+
+    public SecurityRequirement[] getSecurity() {
+        return security;
+    }
+
+    public void setSecurity(SecurityRequirement[] security) {
+        this.security = security;
+    }
+
+    public Server[] getServers() {
+        return servers;
+    }
+
+    public void setServers(Server[] servers) {
+        this.servers = servers;
+    }
 }

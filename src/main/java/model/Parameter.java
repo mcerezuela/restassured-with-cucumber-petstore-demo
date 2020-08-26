@@ -44,4 +44,52 @@ public class Parameter {
      * provided by the schema.
      */
     private Map<String, Example> examples;
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public boolean isExplode() {
+        return explode;
+    }
+
+    public void setExplode(boolean explode) {
+        this.explode = explode;
+    }
+
+    public boolean isAllowReserved() {
+        return allowReserved;
+    }
+
+    public void setAllowReserved(boolean allowReserved) {
+        this.allowReserved = allowReserved;
+    }
+
+    public Schema getSchema() {
+        return schema;
+    }
+
+    public void setSchema(Schema schema) {
+        this.schema = schema;
+    }
+
+    public Object getExample() {
+        return example;
+    }
+
+    public void setExample(Object example) {
+        this.example = example;
+    }
+
+    public Map<String, Example> getExamples() {
+        return examples;
+    }
+
+    public void setExamples(Map<String, Example> examples) {
+        this.examples = examples;
+    }
 }

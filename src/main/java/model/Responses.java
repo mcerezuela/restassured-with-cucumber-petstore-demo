@@ -33,4 +33,20 @@ public class Responses {
      * explicit code definition takes precedence over the range definition for that code.
      */
     private Map<String, Response> httpStatusCodes;
+
+    public Response getDefault() {
+        return _default;
+    }
+
+    public void setDefault(Response _default) {
+        this._default = _default;
+    }
+
+    public Map<String, Response> getHttpStatusCodes() {
+        return httpStatusCodes;
+    }
+
+    public void setHttpStatusCodes(Map<String, Response> httpStatusCodes) {
+        this.httpStatusCodes = httpStatusCodes;
+    }
 }

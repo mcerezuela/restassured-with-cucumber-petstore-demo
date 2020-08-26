@@ -22,4 +22,36 @@ public class Example {
      * be included in JSON or YAML documents. The value field and externalValue field are mutually exclusive.
      */
     private String externalValue;
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
+    }
+
+    public String getExternalValue() {
+        return externalValue;
+    }
+
+    public void setExternalValue(String externalValue) {
+        this.externalValue = externalValue;
+    }
 }

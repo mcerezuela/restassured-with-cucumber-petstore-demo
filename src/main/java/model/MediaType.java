@@ -31,4 +31,36 @@ public class MediaType {
      * multipart or application/x-www-form-urlencoded.
      */
     private Map<String, Encoding> encoding;
+
+    public Schema getSchema() {
+        return schema;
+    }
+
+    public void setSchema(Schema schema) {
+        this.schema = schema;
+    }
+
+    public Object getExample() {
+        return example;
+    }
+
+    public void setExample(Object example) {
+        this.example = example;
+    }
+
+    public Map<String, Example> getExamples() {
+        return examples;
+    }
+
+    public void setExamples(Map<String, Example> examples) {
+        this.examples = examples;
+    }
+
+    public Map<String, Encoding> getEncoding() {
+        return encoding;
+    }
+
+    public void setEncoding(Map<String, Encoding> encoding) {
+        this.encoding = encoding;
+    }
 }

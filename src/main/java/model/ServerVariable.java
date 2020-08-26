@@ -21,4 +21,28 @@ public class ServerVariable {
      * An optional description for the server variable. CommonMark syntax MAY be used for rich text representation.
      */
     private String description;
+
+    public String[] getEnum() {
+        return _enum;
+    }
+
+    public void setEnum(String[] _enum) {
+        this._enum = _enum;
+    }
+
+    public String getDefault() {
+        return _default;
+    }
+
+    public void setDefault(String _default) {
+        this._default = _default;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

@@ -23,4 +23,28 @@ public class RequestBody {
      * Determines if the request body is required in the request. Defaults to false.
      */
     private boolean required;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Map<String, MediaType> getContent() {
+        return content;
+    }
+
+    public void setContent(Map<String, MediaType> content) {
+        this.content = content;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
+    }
 }

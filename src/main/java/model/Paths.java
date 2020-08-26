@@ -19,4 +19,20 @@ public class Paths {
      * String describing the relative path this object represents.
      */
     private String path;
+
+    public Path getPathData() {
+        return pathData;
+    }
+
+    public void setPathData(Path pathData) {
+        this.pathData = pathData;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 }
