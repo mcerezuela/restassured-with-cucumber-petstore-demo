@@ -16,7 +16,7 @@ public class JsonUtils {
         return jsonDeserializationContext.deserialize(json, getMapType(keyType,valueType));
     }
 
-    public static Type getMapType(Class keyType, Class valueType){
+    public static Type getMapType(Type keyType, Type valueType){
         return TypeToken.getParameterized(HashMap.class, keyType, valueType).getType();
     }
 }

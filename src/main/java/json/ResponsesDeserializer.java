@@ -16,11 +16,11 @@ public class ResponsesDeserializer implements JsonDeserializer<Responses> {
 
         Responses responses = new Responses();
 
+        Map<String, IReferenceable<Response>> responseMap = new HashMap<String, IReferenceable<Response>>();
         String httpCode;
         Response response;
-        Map<String, IReferenceable<Response>> responseMap = new HashMap<String, IReferenceable<Response>>();
 
-        for(Map.Entry<String,JsonElement> entry : responsesJsonObject.entrySet()){
+        for (Map.Entry<String, JsonElement> entry : responsesJsonObject.entrySet()) {
             httpCode = entry.getKey();
             response = jsonDeserializationContext.deserialize(entry.getValue(), Response.class);
             if (httpCode.equals("default")) {
