@@ -32,7 +32,7 @@ public class Responses {
      * definitions are allowed: 1XX, 2XX, 3XX, 4XX, and 5XX. If a response is defined using an explicit code, the
      * explicit code definition takes precedence over the range definition for that code.
      */
-    private Map<String, Response> httpStatusCodes;
+    private Map<String, Response> responseMap;
 
     public Response getDefault() {
         return _default;
@@ -42,11 +42,11 @@ public class Responses {
         this._default = _default;
     }
 
-    public Map<String, Response> getHttpStatusCodes() {
-        return httpStatusCodes;
+    public Map<String, Response> getResponseMap() {
+        return responseMap;
     }
 
-    public void setHttpStatusCodes(Map<String, Response> httpStatusCodes) {
-        this.httpStatusCodes = httpStatusCodes;
+    public void setResponseMap(Map<String, Response> responseMap) {
+        this.responseMap = responseMap;
     }
 }
