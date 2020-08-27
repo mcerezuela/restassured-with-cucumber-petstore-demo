@@ -10,19 +10,19 @@ public class Callback {
     /**
      * A Path Item Object used to define a callback request and expected responses. A complete example is available.
      */
-    private Path path;
+    private PathItem pathItem;
 
     /**
      *
      */
     private String expression;
 
-    public Path getPath() {
-        return path;
+    public PathItem getPathItem() {
+        return pathItem;
     }
 
-    public void setPath(Path path) {
-        this.path = path;
+    public void setPathItem(PathItem pathItem) {
+        this.pathItem = pathItem;
     }
 
     public String getExpression() {

@@ -4,7 +4,7 @@ package model;
  * Describes the operations available on a single path. A Path Item MAY be empty, due to ACL constraints. The path
  * itself is still exposed to the documentation viewer but they will not know which operations and parameters are available.
  */
-public class Path {
+public class PathItem {
     /**
      * Allows for an external definition of this path item. The referenced structure MUST be in the format of a Path
      * Item Object. In case a Path Item Object field appears both in the defined object and the referenced object,
