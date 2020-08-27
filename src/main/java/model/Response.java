@@ -6,7 +6,7 @@ import java.util.Map;
  * Describes a single response from an API Operation, including design-time, static links to operations based on
  * the response.
  */
-public class Response implements IReferenceable<Response>{
+public class Response extends ReferenceableObject<Response>{
     /**
      * REQUIRED. A short description of the response. CommonMark syntax MAY be used for rich text representation.
      */
@@ -61,9 +61,5 @@ public class Response implements IReferenceable<Response>{
 
     public void setLinks(Map<String, IReferenceable<Link>> links) {
         this.links = links;
-    }
-
-    public Response getReferencedObject() {
-        return this;
     }
 }

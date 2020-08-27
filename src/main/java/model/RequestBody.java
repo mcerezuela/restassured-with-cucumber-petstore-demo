@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * Describes a single request body.
  */
-public class RequestBody implements IReferenceable<RequestBody> {
+public class RequestBody extends ReferenceableObject<RequestBody> {
     /**
      * A brief description of the request body. This could contain examples of use. CommonMark syntax MAY be used for
      * rich text representation.
@@ -46,9 +46,5 @@ public class RequestBody implements IReferenceable<RequestBody> {
 
     public void setRequired(boolean required) {
         this.required = required;
-    }
-
-    public RequestBody getReferencedObject() {
-        return this;
     }
 }

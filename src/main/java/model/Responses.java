@@ -21,7 +21,7 @@ public class Responses {
      * to cover undeclared responses. A Reference Object can link to a response that the OpenAPI Object's
      * components/responses section defines.
      */
-    private IReferenceable<IReferenceable<Response>> _default;
+    private IReferenceable<Response> _default;
 
     /**
      * Any HTTP status code can be used as the property name, but only one property per code, to describe the expected
@@ -34,11 +34,11 @@ public class Responses {
      */
     private Map<String, IReferenceable<Response>> responseMap;
 
-    public IReferenceable<IReferenceable<Response>> getDefault() {
+    public IReferenceable<Response> getDefault() {
         return _default;
     }
 
-    public void setDefault(IReferenceable<IReferenceable<Response>> _default) {
+    public void setDefault(IReferenceable<Response> _default) {
         this._default = _default;
     }
 

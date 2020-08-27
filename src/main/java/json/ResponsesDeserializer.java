@@ -1,6 +1,7 @@
 package json;
 
 import com.google.gson.*;
+import model.IReferenceable;
 import model.Response;
 import model.Responses;
 
@@ -17,7 +18,7 @@ public class ResponsesDeserializer implements JsonDeserializer<Responses> {
 
         String httpCode;
         Response response;
-        Map<String, Response> responseMap = new HashMap<String, Response>();
+        Map<String, IReferenceable<Response>> responseMap = new HashMap<String, IReferenceable<Response>>();
 
         for(Map.Entry<String,JsonElement> entry : responsesJsonObject.entrySet()){
             httpCode = entry.getKey();

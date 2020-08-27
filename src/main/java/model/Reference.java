@@ -1,6 +1,6 @@
 package model;
 
-public class Reference<T> implements IReferenceable<T> {
+public class Reference<T extends ReferenceableObject<T>> implements IReferenceable<T> {
     private String ref;
 
     private T referencedObject;
@@ -13,8 +13,12 @@ public class Reference<T> implements IReferenceable<T> {
         this.ref = ref;
     }
 
-    private void findReferencedObject() {
+    public boolean hasReferencedObject() {
+        return referencedObject != null;
+    }
 
+    public T findReferencedObject(Components components) {
+        return null;
     }
 
     public T getReferencedObject() {

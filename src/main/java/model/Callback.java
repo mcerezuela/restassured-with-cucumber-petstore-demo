@@ -6,7 +6,7 @@ package model;
  * responses. The key value used to identify the path item object is an expression, evaluated at runtime, that
  * identifies a URL to use for the callback operation.
  */
-public class Callback implements IReferenceable<Callback> {
+public class Callback extends ReferenceableObject<Callback> {
     /**
      * A Path Item Object used to define a callback request and expected responses. A complete example is available.
      */
@@ -31,9 +31,5 @@ public class Callback implements IReferenceable<Callback> {
 
     public void setExpression(String expression) {
         this.expression = expression;
-    }
-
-    public Callback getReferencedObject() {
-        return this;
     }
 }

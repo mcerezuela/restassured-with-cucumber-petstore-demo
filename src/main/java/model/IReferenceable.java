@@ -1,7 +1,10 @@
 package model;
 
+
 public interface IReferenceable<T> {
+    boolean hasReferencedObject();
 
-    public T getReferencedObject();
+    T findReferencedObject(Components components);
 
+    T getReferencedObject();
 }

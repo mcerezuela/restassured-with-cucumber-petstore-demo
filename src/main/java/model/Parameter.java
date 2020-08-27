@@ -5,7 +5,7 @@ import javafx.css.StyleableBooleanProperty;
 
 import java.util.Map;
 
-public class Parameter implements IReferenceable<Parameter> {
+public class Parameter extends ReferenceableObject<Parameter> {
     /**
      * REQUIRED. The name of the parameter. Parameter names are case sensitive.
      *
@@ -185,9 +185,5 @@ public class Parameter implements IReferenceable<Parameter> {
 
     public void setExamples(Map<String, IReferenceable<Example>> examples) {
         this.examples = examples;
-    }
-
-    public Parameter getReferencedObject() {
-        return this;
     }
 }

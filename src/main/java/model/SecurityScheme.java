@@ -5,7 +5,7 @@ package model;
  * (either as a header, a cookie parameter or as a query parameter), OAuth2's common flows (implicit, password,
  * client credentials and authorization code) as defined in RFC6749, and OpenID Connect Discovery.
  */
-public class SecurityScheme implements IReferenceable<SecurityScheme> {
+public class SecurityScheme extends ReferenceableObject<SecurityScheme> {
     /**
      * REQUIRED. The type of the security scheme. Valid values are "apiKey", "http", "oauth2", "openIdConnect".
      */
@@ -110,9 +110,5 @@ public class SecurityScheme implements IReferenceable<SecurityScheme> {
 
     public void setOpenIdConnectUrl(String openIdConnectUrl) {
         this.openIdConnectUrl = openIdConnectUrl;
-    }
-
-    public SecurityScheme getReferencedObject() {
-        return this;
     }
 }

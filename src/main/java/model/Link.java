@@ -13,7 +13,7 @@ import java.util.Map;
  * For computing links, and providing instructions to execute them, a runtime expression is used for accessing values
  * in an operation and using them as parameters while invoking the linked operation.
  */
-public class Link implements IReferenceable<Link> {
+public class Link extends ReferenceableObject<Link> {
     /**
      * A relative or absolute URI reference to an OAS operation. This field is mutually exclusive of the operationId
      * field, and MUST point to an Operation Object. Relative operationRef values MAY be used to locate an existing
@@ -96,9 +96,5 @@ public class Link implements IReferenceable<Link> {
 
     public void setServer(Server server) {
         this.server = server;
-    }
-
-    public Link getReferencedObject() {
-        return this;
     }
 }

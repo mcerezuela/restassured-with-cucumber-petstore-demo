@@ -1,6 +1,6 @@
 package model;
 
-public class Example implements IReferenceable<Example> {
+public class Example extends ReferenceableObject<Example> {
     /**
      * Short description for the example.
      */
@@ -53,9 +53,5 @@ public class Example implements IReferenceable<Example> {
 
     public void setExternalValue(String externalValue) {
         this.externalValue = externalValue;
-    }
-
-    public Example getReferencedObject() {
-        return this;
     }
 }
