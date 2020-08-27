@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Map;
+
 /**
  * A map of possible out-of band callbacks related to the parent operation. Each value in the map is a
  * Path Item Object that describes a set of requests that may be initiated by the API provider and the expected
@@ -10,26 +12,13 @@ public class Callback extends ReferenceableObject<Callback> {
     /**
      * A Path Item Object used to define a callback request and expected responses. A complete example is available.
      */
-    private PathItem pathItem;
+    private Map<String, PathItem> pathMap;
 
-    /**
-     *
-     */
-    private String expression;
-
-    public PathItem getPathItem() {
-        return pathItem;
+    public Map<String, PathItem> getPathMap() {
+        return pathMap;
     }
 
-    public void setPathItem(PathItem pathItem) {
-        this.pathItem = pathItem;
-    }
-
-    public String getExpression() {
-        return expression;
-    }
-
-    public void setExpression(String expression) {
-        this.expression = expression;
+    public void setPathMap(Map<String, PathItem> pathMap) {
+        this.pathMap = pathMap;
     }
 }
