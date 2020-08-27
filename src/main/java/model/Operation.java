@@ -40,14 +40,14 @@ public class Operation {
      * A unique parameter is defined by a combination of a name and location. The list can use the Reference Object to
      * link to parameters that are defined at the OpenAPI Object's components/parameters.
      */
-    private Parameter[] parameters;
+    private  IReferenceable<Parameter>[] parameters;
 
     /**
      * The request body applicable for this operation. The requestBody is only supported in HTTP methods where the
      * HTTP 1.1 specification RFC7231 has explicitly defined semantics for request bodies. In other cases where the
      * HTTP spec is vague, requestBody SHALL be ignored by consumers.
      */
-    private Request requestBody;
+    private  IReferenceable<RequestBody> requestBody;
 
     /**
      * REQUIRED. The list of possible responses as they are returned from executing this operation.
@@ -59,7 +59,7 @@ public class Operation {
      * the Callback Object. Each value in the map is a Callback Object that describes a request that may be initiated
      * by the API provider and the expected responses.
      */
-    private Map<String, Callback> callbacks;
+    private Map<String, IReferenceable<Callback>> callbacks;
 
     /**
      * Declares this operation to be deprecated. Consumers SHOULD refrain from usage of the declared operation.
@@ -122,19 +122,19 @@ public class Operation {
         this.operationId = operationId;
     }
 
-    public Parameter[] getParameters() {
+    public  IReferenceable<Parameter>[] getParameters() {
         return parameters;
     }
 
-    public void setParameters(Parameter[] parameters) {
+    public void setParameters( IReferenceable<Parameter>[] parameters) {
         this.parameters = parameters;
     }
 
-    public Request getRequestBody() {
+    public  IReferenceable<RequestBody> getRequestBody() {
         return requestBody;
     }
 
-    public void setRequestBody(Request requestBody) {
+    public void setRequestBody( IReferenceable<RequestBody> requestBody) {
         this.requestBody = requestBody;
     }
 
@@ -146,11 +146,11 @@ public class Operation {
         this.responses = responses;
     }
 
-    public Map<String, Callback> getCallbacks() {
+    public Map<String, IReferenceable<Callback>> getCallbacks() {
         return callbacks;
     }
 
-    public void setCallbacks(Map<String, Callback> callbacks) {
+    public void setCallbacks(Map<String, IReferenceable<Callback>> callbacks) {
         this.callbacks = callbacks;
     }
 

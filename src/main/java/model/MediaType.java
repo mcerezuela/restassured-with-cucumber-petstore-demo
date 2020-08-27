@@ -9,7 +9,7 @@ public class MediaType {
     /**
      * The schema defining the content of the request, response, or parameter.
      */
-    private Schema schema;
+    private IReferenceable<Schema> schema;
 
     /**
      * Example of the media type. The example object SHOULD be in the correct format as specified by the media type.
@@ -23,7 +23,7 @@ public class MediaType {
      * The examples field is mutually exclusive of the example field. Furthermore, if referencing a schema which
      * contains an example, the examples value SHALL override the example provided by the schema.
      */
-    private Map<String, Example> examples;
+    private Map<String, IReferenceable<Example>> examples;
 
     /**
      * A map between a property name and its encoding information. The key, being the property name, MUST exist in the
@@ -32,11 +32,11 @@ public class MediaType {
      */
     private Map<String, Encoding> encoding;
 
-    public Schema getSchema() {
+    public IReferenceable<Schema> getSchema() {
         return schema;
     }
 
-    public void setSchema(Schema schema) {
+    public void setSchema(IReferenceable<Schema> schema) {
         this.schema = schema;
     }
 
@@ -48,11 +48,11 @@ public class MediaType {
         this.example = example;
     }
 
-    public Map<String, Example> getExamples() {
+    public Map<String, IReferenceable<Example>> getExamples() {
         return examples;
     }
 
-    public void setExamples(Map<String, Example> examples) {
+    public void setExamples(Map<String, IReferenceable<Example>> examples) {
         this.examples = examples;
     }
 

@@ -21,7 +21,7 @@ public class Responses {
      * to cover undeclared responses. A Reference Object can link to a response that the OpenAPI Object's
      * components/responses section defines.
      */
-    private Response _default;
+    private IReferenceable<IReferenceable<Response>> _default;
 
     /**
      * Any HTTP status code can be used as the property name, but only one property per code, to describe the expected
@@ -32,21 +32,21 @@ public class Responses {
      * definitions are allowed: 1XX, 2XX, 3XX, 4XX, and 5XX. If a response is defined using an explicit code, the
      * explicit code definition takes precedence over the range definition for that code.
      */
-    private Map<String, Response> responseMap;
+    private Map<String, IReferenceable<Response>> responseMap;
 
-    public Response getDefault() {
+    public IReferenceable<IReferenceable<Response>> getDefault() {
         return _default;
     }
 
-    public void setDefault(Response _default) {
+    public void setDefault(IReferenceable<IReferenceable<Response>> _default) {
         this._default = _default;
     }
 
-    public Map<String, Response> getResponseMap() {
+    public Map<String, IReferenceable<Response>> getResponseMap() {
         return responseMap;
     }
 
-    public void setResponseMap(Map<String, Response> responseMap) {
+    public void setResponseMap(Map<String, IReferenceable<Response>> responseMap) {
         this.responseMap = responseMap;
     }
 }

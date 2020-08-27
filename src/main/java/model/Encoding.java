@@ -23,7 +23,7 @@ public class Encoding {
      * is described separately and SHALL be ignored in this section. This property SHALL be ignored if the request
      * body media type is not a multipart.
      */
-    private Map<String, Header> headers;
+    private Map<String, IReferenceable<Header>> headers;
 
     /**
      * Describes how a specific property value will be serialized depending on its type. See Parameter Object for
@@ -55,11 +55,11 @@ public class Encoding {
         this.contentType = contentType;
     }
 
-    public Map<String, Header> getHeaders() {
+    public Map<String, IReferenceable<Header>> getHeaders() {
         return headers;
     }
 
-    public void setHeaders(Map<String, Header> headers) {
+    public void setHeaders(Map<String, IReferenceable<Header>> headers) {
         this.headers = headers;
     }
 

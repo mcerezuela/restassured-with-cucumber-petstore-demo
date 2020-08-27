@@ -5,7 +5,7 @@ import javafx.css.StyleableBooleanProperty;
 
 import java.util.Map;
 
-public class Parameter {
+public class Parameter implements IReferenceable<Parameter> {
     /**
      * REQUIRED. The name of the parameter. Parameter names are case sensitive.
      *
@@ -72,7 +72,7 @@ public class Parameter {
     /**
      * The schema defining the type used for the parameter.
      */
-    private Schema schema;
+    private IReferenceable<Schema> schema;
 
     /**
      * Example of the parameter's potential value. The example SHOULD match the specified schema and encoding
@@ -89,7 +89,7 @@ public class Parameter {
      * Furthermore, if referencing a schema that contains an example, the examples value SHALL override the example
      * provided by the schema.
      */
-    private Map<String, Example> examples;
+    private Map<String, IReferenceable<Example>> examples;
 
     public String getName() {
         return name;
@@ -163,11 +163,11 @@ public class Parameter {
         this.allowReserved = allowReserved;
     }
 
-    public Schema getSchema() {
+    public IReferenceable<Schema> getSchema() {
         return schema;
     }
 
-    public void setSchema(Schema schema) {
+    public void setSchema(IReferenceable<Schema> schema) {
         this.schema = schema;
     }
 
@@ -179,11 +179,15 @@ public class Parameter {
         this.example = example;
     }
 
-    public Map<String, Example> getExamples() {
+    public Map<String, IReferenceable<Example>> getExamples() {
         return examples;
     }
 
-    public void setExamples(Map<String, Example> examples) {
+    public void setExamples(Map<String, IReferenceable<Example>> examples) {
         this.examples = examples;
+    }
+
+    public Parameter getReferencedObject() {
+        return this;
     }
 }

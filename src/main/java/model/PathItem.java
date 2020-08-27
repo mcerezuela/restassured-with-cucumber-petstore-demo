@@ -74,7 +74,7 @@ public class PathItem {
      * parameters. A unique parameter is defined by a combination of a name and location. The list can use the
      * Reference Object to link to parameters that are defined at the OpenAPI Object's components/parameters.
      */
-    private Parameter[] parameters;
+    private  IReferenceable<Parameter>[] parameters;
 
     public String getRef() {
         return ref;
@@ -172,11 +172,11 @@ public class PathItem {
         this.servers = servers;
     }
 
-    public Parameter[] getParameters() {
+    public  IReferenceable<Parameter>[] getParameters() {
         return parameters;
     }
 
-    public void setParameters(Parameter[] parameters) {
+    public void setParameters( IReferenceable<Parameter>[] parameters) {
         this.parameters = parameters;
     }
 }
