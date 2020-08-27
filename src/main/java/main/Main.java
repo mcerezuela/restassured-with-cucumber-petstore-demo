@@ -2,6 +2,7 @@ package main;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import json.CallbackDeserializer;
 import json.PathsDeserializer;
 import json.ReferenceableDeserializer;
 import json.ResponsesDeserializer;
@@ -245,6 +246,7 @@ public class Main {
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Paths.class, new PathsDeserializer());
+        gsonBuilder.registerTypeAdapter(Callback.class, new CallbackDeserializer());
         gsonBuilder.registerTypeAdapter(Responses.class, new ResponsesDeserializer());
         gsonBuilder.registerTypeAdapter(IReferenceable.class, new ReferenceableDeserializer());
 
