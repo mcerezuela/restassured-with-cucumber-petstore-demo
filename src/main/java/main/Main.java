@@ -1,11 +1,5 @@
 package main;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import json.CallbackDeserializer;
-import json.PathsDeserializer;
-import json.ReferenceableDeserializer;
-import json.ResponsesDeserializer;
 import model.*;
 
 public class Main {
@@ -244,15 +238,8 @@ public class Main {
                 "        }\n" +
                 "      }";
 
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Paths.class, new PathsDeserializer());
-        gsonBuilder.registerTypeAdapter(Callback.class, new CallbackDeserializer());
-        gsonBuilder.registerTypeAdapter(Responses.class, new ResponsesDeserializer());
-        gsonBuilder.registerTypeAdapter(IReferenceable.class, new ReferenceableDeserializer());
+        OpenAPISpecification oas = OpenAPISpecificationDeserializer.deserialize(json);
 
-        Gson gson = gsonBuilder.create();
-
-        OpenAPISpecification oas = gson.fromJson(json, OpenAPISpecification.class);
         System.out.println(oas);
     }
 }
