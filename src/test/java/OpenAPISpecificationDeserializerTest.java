@@ -2,6 +2,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import jdk.nashorn.internal.objects.annotations.Function;
 import main.OpenAPISpecificationDeserializer;
 import model.*;
 import org.testng.Assert;
@@ -11,6 +12,7 @@ import utils.Utils;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 @Test()
 public class OpenAPISpecificationDeserializerTest {
@@ -37,6 +39,50 @@ public class OpenAPISpecificationDeserializerTest {
         }
     }
 
+    private Boolean getBooleanValue(JsonElement jsonElement, String key) {
+        JsonElement value = jsonElement.getAsJsonObject().get(key);
+        if (value != null) {
+            return value.getAsBoolean();
+        } else {
+            return null;
+        }
+    }
+    
+    private void assertStringArraysAreEqual(String[] array, JsonArray expectedArray) {
+        if (expectedArray != null) {
+            Assert.assertEquals(array.length, expectedArray.size());
+            for (int i = 0; i < expectedArray.size(); i++) {
+                Assert.assertEquals(array[i], expectedArray.get(i).getAsString());
+            }
+        } else {
+            Assert.assertNull(array);
+        }
+    }
+
+    private <T> void assertArraysAreEqual(T[] array, JsonArray expectedArray, BiConsumer<T, JsonObject> consumer) {
+        if (expectedArray != null) {
+            Assert.assertEquals(array.length, expectedArray.size());
+            for (int i = 0; i < expectedArray.size(); i++) {
+                consumer.accept(array[i], expectedArray.get(i).getAsJsonObject());
+            }
+        } else {
+            Assert.assertNull(array);
+        }
+    }
+
+    private <T> void assertMapsAreEqual(Map<String, T> map, JsonObject expectedMap, BiConsumer<T, JsonObject> consumer) {
+        if (expectedMap != null) {
+            Assert.assertEquals(map.size(), expectedMap.size());
+            Assert.assertEquals(map.keySet(), expectedMap.keySet());
+            for (Map.Entry<String, JsonElement> entry : expectedMap.entrySet()) {
+                String key = entry.getKey();
+                consumer.accept(map.get(key), expectedMap.getAsJsonObject(key));
+            }
+        } else {
+            Assert.assertNull(map);
+        }
+    }
+
     private void assertOpenapiSpecificationIsCorrect(OpenAPISpecification oas, JsonObject sourceJson) {
         Assert.assertEquals(oas.getOpenapi(), getStringValue(sourceJson, "openapi"));
 
@@ -44,7 +90,7 @@ public class OpenAPISpecificationDeserializerTest {
         assertServersIsCorrect(oas.getServers(), sourceJson.getAsJsonArray("servers"));
         assertPathsIsCorrect(oas.getPaths(), sourceJson.getAsJsonObject("paths"));
         assertComponentsIsCorrect(oas.getComponents(), sourceJson.getAsJsonObject("components"));
-        assertSecurityIsCorrect(oas.getSecurity(), sourceJson.getAsJsonObject("security"));
+        assertSecurityIsCorrect(oas.getSecurity(), sourceJson.getAsJsonArray("security"));
         assertTagsIsCorrect(oas.getTags(), sourceJson.getAsJsonObject("tags"));
         assertExternalDocsIsCorrect(oas.getExternalDocs(), sourceJson.getAsJsonObject("externalDocs"));
     }
@@ -79,14 +125,7 @@ public class OpenAPISpecificationDeserializerTest {
     }
 
     private void assertServersIsCorrect(Server[] servers, JsonArray expectedServers) {
-        if (expectedServers != null) {
-            Assert.assertEquals(servers.length, expectedServers.size());
-            for (int i = 0; i < expectedServers.size(); i++) {
-                assertServerIsCorrect(servers[i], expectedServers.get(i).getAsJsonObject());
-            }
-        } else {
-            Assert.assertNull(servers);
-        }
+        assertArraysAreEqual(servers, expectedServers, this::assertServerIsCorrect);
     }
 
     private void assertServerIsCorrect(Server server, JsonObject expectedServer) {
@@ -97,36 +136,71 @@ public class OpenAPISpecificationDeserializerTest {
     }
 
     private void assertVariablesIsCorrect(Map<String, ServerVariable> variables, JsonObject expectedVariables) {
-        if (expectedVariables != null) {
-            Assert.assertEquals(variables.size(), expectedVariables.size());
-            Assert.assertEquals(variables.keySet(), expectedVariables.keySet());
-            for (Map.Entry<String, JsonElement> entry : expectedVariables.entrySet()) {
-                String key = entry.getKey();
-                assertServerVariableIsCorrect(variables.get(key), expectedVariables.getAsJsonObject(key));
-            }
-        } else {
-            Assert.assertNull(variables);
-        }
+        assertMapsAreEqual(variables, expectedVariables, this::assertServerVariableIsCorrect);
     }
 
     private void assertServerVariableIsCorrect(ServerVariable serverVariable, JsonObject expectedServerVariable) {
-        JsonArray expectedEnum = expectedServerVariable.getAsJsonArray("enum");
-        String[] _enum = serverVariable.getEnum();
-
-        if (expectedEnum != null) {
-            Assert.assertEquals(_enum.length, expectedEnum.size());
-            for (int i = 0; i < expectedEnum.size(); i++) {
-                Assert.assertEquals(_enum[i], expectedEnum.get(i).getAsString());
-            }
-        } else {
-            Assert.assertNull(_enum);
-        }
-
+        assertStringArraysAreEqual(serverVariable.getEnum(), expectedServerVariable.getAsJsonArray("enum"));
         Assert.assertEquals(serverVariable.getDefault(), getStringValue(expectedServerVariable, "default"));
         Assert.assertEquals(serverVariable.getDescription(), getStringValue(expectedServerVariable, "description"));
     }
 
     private void assertPathsIsCorrect(Paths paths, JsonObject expectedPaths) {
+        assertMapsAreEqual(paths.getPathMap(), expectedPaths, this::assertPathItemIsCorrect);
+    }
+
+    private void assertPathItemIsCorrect(PathItem pathItem, JsonObject expectedPathItem) {
+        Assert.assertEquals(pathItem.getRef(), getStringValue(expectedPathItem, "$ref"));
+        Assert.assertEquals(pathItem.getSummary(), getStringValue(expectedPathItem, "summary"));
+        Assert.assertEquals(pathItem.getDescription(), getStringValue(expectedPathItem, "description"));
+
+        assertOperationIsCorrect(pathItem.getGet(), expectedPathItem.getAsJsonObject("get"));
+        assertOperationIsCorrect(pathItem.getPut(), expectedPathItem.getAsJsonObject("put"));
+        assertOperationIsCorrect(pathItem.getPost(), expectedPathItem.getAsJsonObject("post"));
+        assertOperationIsCorrect(pathItem.getDelete(), expectedPathItem.getAsJsonObject("delete"));
+        assertOperationIsCorrect(pathItem.getOptions(), expectedPathItem.getAsJsonObject("options"));
+        assertOperationIsCorrect(pathItem.getHead(), expectedPathItem.getAsJsonObject("head"));
+        assertOperationIsCorrect(pathItem.getPatch(), expectedPathItem.getAsJsonObject("patch"));
+        assertOperationIsCorrect(pathItem.getTrace(), expectedPathItem.getAsJsonObject("trace"));
+
+        assertServersIsCorrect(pathItem.getServers(), expectedPathItem.getAsJsonArray("servers"));
+
+        assertParametersIsCorrect(pathItem.getParameters(), expectedPathItem.getAsJsonArray("parameters"));
+    }
+
+    private void assertOperationIsCorrect(Operation operation, JsonObject expectedOperation) {
+        if (expectedOperation != null) {
+            assertStringArraysAreEqual(operation.getTags(), expectedOperation.getAsJsonArray("tags"));
+            Assert.assertEquals(operation.getSummary(), getStringValue(expectedOperation, "summary"));
+            Assert.assertEquals(operation.getDescription(), getStringValue(expectedOperation, "description"));
+            Assert.assertEquals(operation.getOperationId(), getStringValue(expectedOperation, "operationid"));
+            Assert.assertEquals(operation.isDeprecated(), getBooleanValue(expectedOperation, "deprecated"));
+
+            assertExternalDocsIsCorrect(operation.getExternalDocs(), expectedOperation.getAsJsonObject("externalDocs"));
+            assertParametersIsCorrect(operation.getParameters(), expectedOperation.getAsJsonArray("parameters"));
+            assertRequestBodyIsCorrect(operation.getRequestBody(), expectedOperation.getAsJsonObject("requestBody"));
+            assertResponsesIsCorrect(operation.getResponses(), expectedOperation.getAsJsonObject("responses"));
+            assertCallbacksIsCorrect(operation.getCallbacks(), expectedOperation.getAsJsonObject("callbacks"));
+            assertSecurityIsCorrect(operation.getSecurity(), expectedOperation.getAsJsonArray("security"));
+            assertServersIsCorrect(operation.getServers(), expectedOperation.getAsJsonArray("servers"));
+        } else {
+            Assert.assertNull(operation);
+        }
+    }
+
+    private void assertParametersIsCorrect(IReferenceable<Parameter>[] parameters, JsonArray expectedParameters) {
+        Assert.fail("Not implemented");
+    }
+
+    private void assertRequestBodyIsCorrect(IReferenceable<RequestBody> requestBody, JsonObject expectedRequestBody) {
+        Assert.fail("Not implemented");
+    }
+
+    private void assertResponsesIsCorrect(Responses responses, JsonObject expectedResponses) {
+        Assert.fail("Not implemented");
+    }
+
+    private void assertCallbacksIsCorrect(Map<String, IReferenceable<Callback>> callbacks, JsonObject expectedCallbacks) {
         Assert.fail("Not implemented");
     }
 
@@ -134,7 +208,7 @@ public class OpenAPISpecificationDeserializerTest {
         Assert.fail("Not implemented");
     }
 
-    private void assertSecurityIsCorrect(SecurityRequirement[] securityRequirements, JsonObject expectedSecurityRequirements) {
+    private void assertSecurityIsCorrect(SecurityRequirement[] securityRequirements, JsonArray expectedSecurityRequirements) {
         Assert.fail("Not implemented");
     }
 

@@ -65,7 +65,7 @@ public class Operation {
      * Declares this operation to be deprecated. Consumers SHOULD refrain from usage of the declared operation.
      * Default value is false.
      */
-    private boolean deprecated;
+    private Boolean deprecated;
 
     /**
      * A declaration of which security mechanisms can be used for this operation. The list of values includes
@@ -154,11 +154,11 @@ public class Operation {
         this.callbacks = callbacks;
     }
 
-    public boolean isDeprecated() {
+    public Boolean isDeprecated() {
         return deprecated;
     }
 
-    public void setDeprecated(boolean deprecated) {
+    public void setDeprecated(Boolean deprecated) {
         this.deprecated = deprecated;
     }
 
