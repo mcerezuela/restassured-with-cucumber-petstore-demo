@@ -1,8 +1,5 @@
 package model;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.XPath;
-import javafx.css.StyleableBooleanProperty;
-
 import java.util.Map;
 
 public class Parameter extends ReferenceableObject<Parameter> {
@@ -34,12 +31,12 @@ public class Parameter extends ReferenceableObject<Parameter> {
      * Determines whether this parameter is mandatory. If the parameter location is "path", this property is REQUIRED
      * and its value MUST be true. Otherwise, the property MAY be included and its default value is false.
      */
-    private boolean required;
+    private Boolean required;
 
     /**
      * Specifies that a parameter is deprecated and SHOULD be transitioned out of usage. Default value is false.
      */
-    private boolean deprecated;
+    private Boolean deprecated;
 
     /**
      * Sets the ability to pass empty-valued parameters. This is valid only for query parameters and allows sending a
@@ -47,7 +44,7 @@ public class Parameter extends ReferenceableObject<Parameter> {
      * serialized), the value of allowEmptyValue SHALL be ignored. Use of this property is NOT RECOMMENDED, as it is
      * likely to be removed in a later revision.
      */
-    private boolean allowEmptyValue;
+    private Boolean allowEmptyValue;
 
     /**
      * Describes how the parameter value will be serialized depending on the type of the parameter value. Default
@@ -60,14 +57,14 @@ public class Parameter extends ReferenceableObject<Parameter> {
      * the array or key-value pair of the map. For other types of parameters this property has no effect. When style
      * is form, the default value is true. For all other styles, the default value is false.
      */
-    private boolean explode;
+    private Boolean explode;
 
     /**
      * Determines whether the parameter value SHOULD allow reserved characters, as defined by
      * RFC3986 :/?#[]@!$&'()*+,;= to be included without percent-encoding. This property only applies to parameters
      * with an in value of query. The default value is false.
      */
-    private boolean allowReserved;
+    private Boolean allowReserved;
 
     /**
      * The schema defining the type used for the parameter.
@@ -90,6 +87,12 @@ public class Parameter extends ReferenceableObject<Parameter> {
      * provided by the schema.
      */
     private Map<String, IReferenceable<Example>> examples;
+
+    /**
+     * A map containing the representations for the parameter. The key is the media type and the value describes it.
+     * The map MUST only contain one entry.
+     */
+    private Map<String, MediaType> content;
 
     public String getName() {
         return name;
@@ -115,27 +118,27 @@ public class Parameter extends ReferenceableObject<Parameter> {
         this.description = description;
     }
 
-    public boolean isRequired() {
+    public Boolean isRequired() {
         return required;
     }
 
-    public void setRequired(boolean required) {
+    public void setRequired(Boolean required) {
         this.required = required;
     }
 
-    public boolean isDeprecated() {
+    public Boolean isDeprecated() {
         return deprecated;
     }
 
-    public void setDeprecated(boolean deprecated) {
+    public void setDeprecated(Boolean deprecated) {
         this.deprecated = deprecated;
     }
 
-    public boolean isAllowEmptyValue() {
+    public Boolean isAllowEmptyValue() {
         return allowEmptyValue;
     }
 
-    public void setAllowEmptyValue(boolean allowEmptyValue) {
+    public void setAllowEmptyValue(Boolean allowEmptyValue) {
         this.allowEmptyValue = allowEmptyValue;
     }
 
@@ -147,19 +150,19 @@ public class Parameter extends ReferenceableObject<Parameter> {
         this.style = style;
     }
 
-    public boolean isExplode() {
+    public Boolean isExplode() {
         return explode;
     }
 
-    public void setExplode(boolean explode) {
+    public void setExplode(Boolean explode) {
         this.explode = explode;
     }
 
-    public boolean isAllowReserved() {
+    public Boolean isAllowReserved() {
         return allowReserved;
     }
 
-    public void setAllowReserved(boolean allowReserved) {
+    public void setAllowReserved(Boolean allowReserved) {
         this.allowReserved = allowReserved;
     }
 
@@ -185,5 +188,13 @@ public class Parameter extends ReferenceableObject<Parameter> {
 
     public void setExamples(Map<String, IReferenceable<Example>> examples) {
         this.examples = examples;
+    }
+
+    public Map<String, MediaType> getContent() {
+        return content;
+    }
+
+    public void setContent(Map<String, MediaType> content) {
+        this.content = content;
     }
 }
