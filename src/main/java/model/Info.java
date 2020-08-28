@@ -11,6 +11,11 @@ public class Info {
     private String title;
 
     /**
+     * A short description of the API. CommonMark syntax MAY be used for rich text representation.
+     */
+    private String description;
+
+    /**
      * A URL to the Terms of Service for the API. MUST be in the format of a URL.
      */
     private String termsOfService;
@@ -37,6 +42,14 @@ public class Info {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.title = description;
     }
 
     public String getTermsOfService() {
