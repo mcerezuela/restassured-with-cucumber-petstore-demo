@@ -22,14 +22,7 @@ public class OpenAPISpecificationDeserializerTest {
             OpenAPISpecification oas = OpenAPISpecificationDeserializer.deserialize(json);
             JsonObject sourceJson = JsonParser.parseString(json).getAsJsonObject();
             Assert.assertNotNull(oas);
-            assertOpenapiIsCorrect(oas, sourceJson);
-            assertInfoIsCorrect(oas, sourceJson);
-            assertServersIsCorrect(oas, sourceJson);
-            assertPathsIsCorrect(oas, sourceJson);
-            assertComponentsIsCorrect(oas, sourceJson);
-            assertSecurityIsCorrect(oas, sourceJson);
-            assertTagsIsCorrect(oas, sourceJson);
-            assertExternalDocsIsCorrect(oas, sourceJson);
+            assertOpenapiSpecificationIsCorrect(oas, sourceJson);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -44,17 +37,19 @@ public class OpenAPISpecificationDeserializerTest {
         }
     }
 
-    private void assertOpenapiIsCorrect(OpenAPISpecification oas, JsonObject sourceJson) {
-        String expectedValue = getStringValue(sourceJson, "openapi");
-        String value = oas.getOpenapi();
+    private void assertOpenapiSpecificationIsCorrect(OpenAPISpecification oas, JsonObject sourceJson) {
+        Assert.assertEquals(oas.getOpenapi(), getStringValue(sourceJson, "openapi"));
 
-        Assert.assertEquals(value, expectedValue);
+        assertInfoIsCorrect(oas.getInfo(), sourceJson.getAsJsonObject("info"));
+        assertServersIsCorrect(oas.getServers(), sourceJson.getAsJsonArray("servers"));
+        assertPathsIsCorrect(oas.getPaths(), sourceJson.getAsJsonObject("paths"));
+        assertComponentsIsCorrect(oas.getComponents(), sourceJson.getAsJsonObject("components"));
+        assertSecurityIsCorrect(oas.getSecurity(), sourceJson.getAsJsonObject("security"));
+        assertTagsIsCorrect(oas.getTags(), sourceJson.getAsJsonObject("tags"));
+        assertExternalDocsIsCorrect(oas.getExternalDocs(), sourceJson.getAsJsonObject("externalDocs"));
     }
 
-    private void assertInfoIsCorrect(OpenAPISpecification oas, JsonObject sourceJson) {
-        JsonObject expectedInfo = sourceJson.getAsJsonObject("info");
-        Info info = oas.getInfo();
-
+    private void assertInfoIsCorrect(Info info, JsonObject expectedInfo) {
         Assert.assertEquals(info.getTitle(), getStringValue(expectedInfo, "title"));
         Assert.assertEquals(info.getDescription(), getStringValue(expectedInfo, "description"));
         Assert.assertEquals(info.getTermsOfService(), getStringValue(expectedInfo, "termsOfService"));
@@ -83,10 +78,7 @@ public class OpenAPISpecificationDeserializerTest {
         }
     }
 
-    private void assertServersIsCorrect(OpenAPISpecification oas, JsonObject sourceJson) {
-        JsonArray expectedServers = sourceJson.getAsJsonArray("servers");
-        Server[] servers = oas.getServers();
-
+    private void assertServersIsCorrect(Server[] servers, JsonArray expectedServers) {
         if (expectedServers != null) {
             Assert.assertEquals(servers.length, expectedServers.size());
             for (int i = 0; i < expectedServers.size(); i++) {
@@ -134,23 +126,23 @@ public class OpenAPISpecificationDeserializerTest {
         Assert.assertEquals(serverVariable.getDescription(), getStringValue(expectedServerVariable, "description"));
     }
 
-    private void assertPathsIsCorrect(OpenAPISpecification oas, JsonObject sourceJson) {
+    private void assertPathsIsCorrect(Paths paths, JsonObject expectedPaths) {
         Assert.fail("Not implemented");
     }
 
-    private void assertComponentsIsCorrect(OpenAPISpecification oas, JsonObject sourceJson) {
+    private void assertComponentsIsCorrect(Components components, JsonObject expectedComponents) {
         Assert.fail("Not implemented");
     }
 
-    private void assertSecurityIsCorrect(OpenAPISpecification oas, JsonObject sourceJson) {
+    private void assertSecurityIsCorrect(SecurityRequirement[] securityRequirements, JsonObject expectedSecurityRequirements) {
         Assert.fail("Not implemented");
     }
 
-    private void assertTagsIsCorrect(OpenAPISpecification oas, JsonObject sourceJson) {
+    private void assertTagsIsCorrect(Tag[] tags, JsonObject expectedTags) {
         Assert.fail("Not implemented");
     }
 
-    private void assertExternalDocsIsCorrect(OpenAPISpecification oas, JsonObject sourceJson) {
+    private void assertExternalDocsIsCorrect(ExternalDocumentation externalDocumentation, JsonObject expectedExternalDocumentation) {
         Assert.fail("Not implemented");
     }
 }
