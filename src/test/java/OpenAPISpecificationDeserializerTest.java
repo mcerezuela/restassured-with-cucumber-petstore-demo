@@ -2,7 +2,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import jdk.nashorn.internal.objects.annotations.Function;
 import main.OpenAPISpecificationDeserializer;
 import model.*;
 import org.testng.Assert;
@@ -80,6 +79,40 @@ public class OpenAPISpecificationDeserializerTest {
             }
         } else {
             Assert.assertNull(map);
+        }
+    }
+
+    private <T extends ReferenceableObject<T>> void assertReferenceableIsCorrect(
+            IReferenceable<T> referenceable, JsonObject expectedReferenceable
+    ) {
+        if (expectedReferenceable != null) {
+            if (expectedReferenceable.has("$ref")) {
+                Assert.assertTrue(referenceable instanceof Reference);
+                assertReferenceIsCorrect(((Reference<T>) referenceable), expectedReferenceable);
+            } else {
+                Assert.assertTrue(referenceable instanceof ReferenceableObject);
+                assertReferenceableObjectIsCorrect(((ReferenceableObject<T>) referenceable), expectedReferenceable);
+            }
+        } else {
+            Assert.assertNull(referenceable);
+        }
+    }
+
+    private <T extends ReferenceableObject<T>> void assertReferenceIsCorrect(
+            Reference<T> reference, JsonObject expectedReference
+    ) {
+        Assert.assertEquals(reference.getRef(), getStringValue(expectedReference, "$ref"));
+    }
+
+    private <T extends ReferenceableObject<T>> void assertReferenceableObjectIsCorrect(
+            ReferenceableObject<T> referenceable, JsonObject expectedReferenceable
+    ) {
+        if (referenceable instanceof Parameter) {
+            assertParameterIsCorrect((Parameter) referenceable, expectedReferenceable);
+        } else if (referenceable instanceof Schema) {
+            assertSchemaIsCorrect((Schema) referenceable, expectedReferenceable);
+        } else if (referenceable instanceof RequestBody) {
+            assertRequestBodyIsCorrect((RequestBody) referenceable, expectedReferenceable);
         }
     }
 
@@ -178,7 +211,7 @@ public class OpenAPISpecificationDeserializerTest {
 
             assertExternalDocsIsCorrect(operation.getExternalDocs(), expectedOperation.getAsJsonObject("externalDocs"));
             assertParametersIsCorrect(operation.getParameters(), expectedOperation.getAsJsonArray("parameters"));
-            assertRequestBodyIsCorrect(operation.getRequestBody(), expectedOperation.getAsJsonObject("requestBody"));
+            assertRequestBodyReferenceableIsCorrect(operation.getRequestBody(), expectedOperation.getAsJsonObject("requestBody"));
             assertResponsesIsCorrect(operation.getResponses(), expectedOperation.getAsJsonObject("responses"));
             assertCallbacksIsCorrect(operation.getCallbacks(), expectedOperation.getAsJsonObject("callbacks"));
             assertSecurityIsCorrect(operation.getSecurity(), expectedOperation.getAsJsonArray("security"));
@@ -192,38 +225,6 @@ public class OpenAPISpecificationDeserializerTest {
         assertArraysAreEqual(parameters, expectedParameters, this::assertReferenceableIsCorrect);
     }
 
-    private <T extends ReferenceableObject<T>> void assertReferenceableIsCorrect(
-            IReferenceable<T> referenceable, JsonObject expectedReferenceable
-    ) {
-        if (expectedReferenceable != null) {
-            if (expectedReferenceable.has("$ref")) {
-                Assert.assertTrue(referenceable instanceof Reference);
-                assertReferenceIsCorrect(((Reference<T>) referenceable), expectedReferenceable);
-            } else {
-                Assert.assertTrue(referenceable instanceof ReferenceableObject);
-                assertReferenceableObjectIsCorrect(((ReferenceableObject<T>) referenceable), expectedReferenceable);
-            }
-        } else {
-            Assert.assertNull(referenceable);
-        }
-    }
-
-    private <T extends ReferenceableObject<T>> void assertReferenceIsCorrect(
-            Reference<T> reference, JsonObject expectedReference
-    ) {
-        Assert.assertEquals(reference.getRef(), getStringValue(expectedReference, "$ref"));
-    }
-
-    private <T extends ReferenceableObject<T>> void assertReferenceableObjectIsCorrect(
-            ReferenceableObject<T> referenceable, JsonObject expectedReferenceable
-    ) {
-        if (referenceable instanceof Parameter) {
-            assertParameterIsCorrect((Parameter) referenceable, expectedReferenceable);
-        } else if (referenceable instanceof Schema) {
-            assertSchemaIsCorrect((Schema) referenceable, expectedReferenceable);
-        }
-    }
-
     private void assertParameterIsCorrect(Parameter parameter, JsonObject expectedParameter) {
         Assert.assertEquals(parameter.getName(), getStringValue(expectedParameter, "name"));
         Assert.assertEquals(parameter.getIn(), getStringValue(expectedParameter, "in"));
@@ -235,12 +236,28 @@ public class OpenAPISpecificationDeserializerTest {
         Assert.assertEquals(parameter.isExplode(), getBooleanValue(expectedParameter, "explode"));
         Assert.assertEquals(parameter.isAllowReserved(), getBooleanValue(expectedParameter, "allowReserved"));
 
-        assertReferenceableIsCorrect(parameter.getSchema(), expectedParameter.getAsJsonObject("schema"));
+        assertSchemaReferenceableIsCorrect(parameter.getSchema(), expectedParameter.getAsJsonObject("schema"));
         // TODO example and examples
     }
 
-    private void assertRequestBodyIsCorrect(IReferenceable<RequestBody> requestBody, JsonObject expectedRequestBody) {
-        Assert.fail("Not implemented");
+    private void assertRequestBodyReferenceableIsCorrect(IReferenceable<RequestBody> requestBody, JsonObject expectedRequestBody) {
+        assertReferenceableIsCorrect(requestBody, expectedRequestBody);
+    }
+
+    private void assertRequestBodyIsCorrect(RequestBody requestBody, JsonObject expectedRequestBody) {
+        Assert.assertEquals(requestBody.getDescription(), getStringValue(expectedRequestBody, "description"));
+        Assert.assertEquals(requestBody.isRequired(), getBooleanValue(expectedRequestBody, "required"));
+
+        assertContentIsCorrect(requestBody.getContent(), expectedRequestBody.getAsJsonObject("content"));
+    }
+
+    private void assertContentIsCorrect(Map<String, MediaType> mediaType, JsonObject expectedMediaType) {
+        assertMapsAreEqual(mediaType, expectedMediaType, this::assertMediaTypeIsCorrect);
+    }
+
+    private void assertMediaTypeIsCorrect(MediaType mediaType, JsonObject expectedMediaType) {
+        assertReferenceableIsCorrect(mediaType.getSchema(), expectedMediaType.getAsJsonObject("schema"));
+        // TODO example and examples
     }
 
     private void assertResponsesIsCorrect(Responses responses, JsonObject expectedResponses) {
@@ -253,6 +270,10 @@ public class OpenAPISpecificationDeserializerTest {
 
     private void assertComponentsIsCorrect(Components components, JsonObject expectedComponents) {
         Assert.fail("Not implemented");
+    }
+
+    private void assertSchemaReferenceableIsCorrect(IReferenceable<Schema> schema, JsonObject expectedSchema) {
+        assertReferenceableIsCorrect(schema, expectedSchema);
     }
 
     private void assertSchemaIsCorrect(Schema schema, JsonObject expectedSchema) {

@@ -22,7 +22,7 @@ public class RequestBody extends ReferenceableObject<RequestBody> {
     /**
      * Determines if the request body is required in the request. Defaults to false.
      */
-    private boolean required;
+    private Boolean required;
 
     public String getDescription() {
         return description;
@@ -40,11 +40,11 @@ public class RequestBody extends ReferenceableObject<RequestBody> {
         this.content = content;
     }
 
-    public boolean isRequired() {
+    public Boolean isRequired() {
         return required;
     }
 
-    public void setRequired(boolean required) {
+    public void setRequired(Boolean required) {
         this.required = required;
     }
 }
