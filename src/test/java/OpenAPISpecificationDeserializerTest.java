@@ -82,6 +82,19 @@ public class OpenAPISpecificationDeserializerTest {
         }
     }
 
+    private void assertStringArrayMapsAreEqual(Map<String, String[]> map, JsonObject expectedMap) {
+        if (expectedMap != null) {
+            Assert.assertEquals(map.size(), expectedMap.size());
+            Assert.assertEquals(map.keySet(), expectedMap.keySet());
+            for (Map.Entry<String, JsonElement> entry : expectedMap.entrySet()) {
+                String key = entry.getKey();
+                assertStringArraysAreEqual(map.get(key), expectedMap.getAsJsonArray(key));
+            }
+        } else {
+            Assert.assertNull(map);
+        }
+    }
+
     private <T> void assertMapsAreEqual(Map<String, T> map, JsonObject expectedMap, BiConsumer<T, JsonObject> consumer) {
         if (expectedMap != null) {
             Assert.assertEquals(map.size(), expectedMap.size());
@@ -153,7 +166,7 @@ public class OpenAPISpecificationDeserializerTest {
         assertPathsIsCorrect(oas.getPaths(), sourceJson.getAsJsonObject("paths"));
         assertComponentsIsCorrect(oas.getComponents(), sourceJson.getAsJsonObject("components"));
         assertSecurityIsCorrect(oas.getSecurity(), sourceJson.getAsJsonArray("security"));
-        assertTagsIsCorrect(oas.getTags(), sourceJson.getAsJsonObject("tags"));
+        assertTagsIsCorrect(oas.getTags(), sourceJson.getAsJsonArray("tags"));
         assertExternalDocsIsCorrect(oas.getExternalDocs(), sourceJson.getAsJsonObject("externalDocs"));
     }
 
@@ -437,14 +450,30 @@ public class OpenAPISpecificationDeserializerTest {
     }
 
     private void assertSecurityIsCorrect(SecurityRequirement[] securityRequirements, JsonArray expectedSecurityRequirements) {
-        Assert.fail("Not implemented");
+        assertArraysAreEqual(securityRequirements, expectedSecurityRequirements, this::assertSecurityRequirementIsCorrect);
     }
 
-    private void assertTagsIsCorrect(Tag[] tags, JsonObject expectedTags) {
-        Assert.fail("Not implemented");
+    private void assertSecurityRequirementIsCorrect(SecurityRequirement securityRequirements, JsonObject expectedSecurityRequirements) {
+        assertStringArrayMapsAreEqual(securityRequirements.getRequirements(), expectedSecurityRequirements);
+    }
+
+    private void assertTagsIsCorrect(Tag[] tags, JsonArray expectedTags) {
+        assertArraysAreEqual(tags, expectedTags, this::assertTagIsCorrect);
+    }
+
+    private void assertTagIsCorrect(Tag tag, JsonObject expectedTag) {
+        Assert.assertEquals(tag.getName(), getStringValue(expectedTag, "name"));
+        Assert.assertEquals(tag.getDescription(), getStringValue(expectedTag, "description"));
+
+        assertExternalDocsIsCorrect(tag.getExternalDocs(), expectedTag.getAsJsonObject("externalDocs"));
     }
 
     private void assertExternalDocsIsCorrect(ExternalDocumentation externalDocumentation, JsonObject expectedExternalDocumentation) {
-        Assert.fail("Not implemented");
+        if (expectedExternalDocumentation != null) {
+            Assert.assertEquals(externalDocumentation.getDescription(), getStringValue(expectedExternalDocumentation, "description"));
+            Assert.assertEquals(externalDocumentation.getUrl(), getStringValue(expectedExternalDocumentation, "url"));
+        } else {
+            Assert.assertNull(externalDocumentation);
+        }
     }
 }

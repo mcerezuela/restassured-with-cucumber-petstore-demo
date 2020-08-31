@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Map;
+
 /**
  * Lists the required security schemes to execute this operation. The name used for each property MUST correspond to a
  * security scheme declared in the Security Schemes under the Components Object.
@@ -19,26 +21,14 @@ public class SecurityRequirement {
      * required for the execution, and the list MAY be empty if authorization does not require a specified scope.
      * For other security scheme types, the array MUST be empty.
      */
-    private String[] requirements;
+    private Map<String, String[]> requirements;
 
-    /**
-     *
-     */
-    private String securityScheme;
 
-    public String[] getRequirements() {
+    public Map<String, String[]> getRequirements() {
         return requirements;
     }
 
-    public void setRequirements(String[] requirements) {
+    public void setRequirements(Map<String, String[]> requirements) {
         this.requirements = requirements;
-    }
-
-    public String getSecurityScheme() {
-        return securityScheme;
-    }
-
-    public void setSecurityScheme(String securityScheme) {
-        this.securityScheme = securityScheme;
     }
 }
