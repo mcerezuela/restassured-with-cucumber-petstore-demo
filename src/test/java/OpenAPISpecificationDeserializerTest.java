@@ -6,6 +6,7 @@ import main.OpenAPISpecificationDeserializer;
 import model.*;
 import org.testng.Assert;
 import org.testng.annotations.*;
+import org.testng.asserts.SoftAssert;
 import utils.Constants;
 import utils.Utils;
 
@@ -16,10 +17,23 @@ import java.util.function.BiConsumer;
 @Test()
 public class OpenAPISpecificationDeserializerTest {
 
-    @Test
-    public void deserializeTest() {
+    private SoftAssert softAssert = new SoftAssert();
+
+    @DataProvider(name = "data-provider")
+    private Object[][] dataProviderMethod() {
+        return new Object[][] {
+                {Constants.PET_STORE_JSON},
+                {Constants.CALLBACK_JSON},
+                {Constants.DATA_SET_JSON},
+                {Constants.LINK_JSON},
+                {Constants.SIMPLE_API_JSON},
+        };
+    }
+
+    @Test(dataProvider = "data-provider")
+    public void deserializeTest(String jsonPath) {
         try {
-            String json = Utils.readFile(Constants.PET_STORE_JSON);
+            String json = Utils.readFile(jsonPath);
             OpenAPISpecification oas = OpenAPISpecificationDeserializer.deserialize(json);
             JsonObject sourceJson = JsonParser.parseString(json).getAsJsonObject();
             Assert.assertNotNull(oas);
@@ -46,9 +60,10 @@ public class OpenAPISpecificationDeserializerTest {
             return null;
         }
     }
-    
+
     private void assertStringArraysAreEqual(String[] array, JsonArray expectedArray) {
         if (expectedArray != null) {
+            Assert.assertNotNull(array);
             Assert.assertEquals(array.length, expectedArray.size());
             for (int i = 0; i < expectedArray.size(); i++) {
                 Assert.assertEquals(array[i], expectedArray.get(i).getAsString());
@@ -60,6 +75,7 @@ public class OpenAPISpecificationDeserializerTest {
 
     private <T> void assertArraysAreEqual(T[] array, JsonArray expectedArray, BiConsumer<T, JsonObject> consumer) {
         if (expectedArray != null) {
+            Assert.assertNotNull(array);
             Assert.assertEquals(array.length, expectedArray.size());
             for (int i = 0; i < expectedArray.size(); i++) {
                 consumer.accept(array[i], expectedArray.get(i).getAsJsonObject());
@@ -71,6 +87,7 @@ public class OpenAPISpecificationDeserializerTest {
 
     private void assertStringMapsAreEqual(Map<String, String> map, JsonObject expectedMap) {
         if (expectedMap != null) {
+            Assert.assertNotNull(map);
             Assert.assertEquals(map.size(), expectedMap.size());
             Assert.assertEquals(map.keySet(), expectedMap.keySet());
             for (Map.Entry<String, JsonElement> entry : expectedMap.entrySet()) {
@@ -84,6 +101,7 @@ public class OpenAPISpecificationDeserializerTest {
 
     private void assertStringArrayMapsAreEqual(Map<String, String[]> map, JsonObject expectedMap) {
         if (expectedMap != null) {
+            Assert.assertNotNull(map);
             Assert.assertEquals(map.size(), expectedMap.size());
             Assert.assertEquals(map.keySet(), expectedMap.keySet());
             for (Map.Entry<String, JsonElement> entry : expectedMap.entrySet()) {
@@ -97,6 +115,7 @@ public class OpenAPISpecificationDeserializerTest {
 
     private <T> void assertMapsAreEqual(Map<String, T> map, JsonObject expectedMap, BiConsumer<T, JsonObject> consumer) {
         if (expectedMap != null) {
+            Assert.assertNotNull(map);
             Assert.assertEquals(map.size(), expectedMap.size());
             Assert.assertEquals(map.keySet(), expectedMap.keySet());
             for (Map.Entry<String, JsonElement> entry : expectedMap.entrySet()) {
@@ -112,6 +131,7 @@ public class OpenAPISpecificationDeserializerTest {
             IReferenceable<T> referenceable, JsonObject expectedReferenceable
     ) {
         if (expectedReferenceable != null) {
+            Assert.assertNotNull(referenceable);
             if (expectedReferenceable.has("$ref")) {
                 Assert.assertTrue(referenceable instanceof Reference);
                 assertReferenceIsCorrect(((Reference<T>) referenceable), expectedReferenceable);
@@ -154,8 +174,8 @@ public class OpenAPISpecificationDeserializerTest {
         }
     }
 
-    private void assertExampleIsCorrect(Example example, JsonObject expectedExcample) {
-        Assert.fail("Not implemented");
+    private void assertExampleIsCorrect(Example example, JsonObject expectedExample) {
+        softAssert.fail("Not implemented");
     }
 
     private void assertOpenapiSpecificationIsCorrect(OpenAPISpecification oas, JsonObject sourceJson) {
@@ -182,6 +202,7 @@ public class OpenAPISpecificationDeserializerTest {
 
     private void assertContactIsCorrect(Contact contact, JsonObject expectedContact) {
         if (expectedContact != null) {
+            Assert.assertNotNull(contact);
             Assert.assertEquals(contact.getName(), getStringValue(expectedContact, "name"));
             Assert.assertEquals(contact.getUrl(), getStringValue(expectedContact, "url"));
             Assert.assertEquals(contact.getEmail(), getStringValue(expectedContact, "email"));
@@ -192,6 +213,7 @@ public class OpenAPISpecificationDeserializerTest {
 
     private void assertLicenseIsCorrect(License license, JsonObject expectedLicense) {
         if (expectedLicense != null) {
+            Assert.assertNotNull(license);
             Assert.assertEquals(license.getName(), getStringValue(expectedLicense, "name"));
             Assert.assertEquals(license.getUrl(), getStringValue(expectedLicense, "url"));
         } else {
@@ -245,6 +267,7 @@ public class OpenAPISpecificationDeserializerTest {
 
     private void assertOperationIsCorrect(Operation operation, JsonObject expectedOperation) {
         if (expectedOperation != null) {
+            Assert.assertNotNull(operation);
             assertStringArraysAreEqual(operation.getTags(), expectedOperation.getAsJsonArray("tags"));
             Assert.assertEquals(operation.getSummary(), getStringValue(expectedOperation, "summary"));
             Assert.assertEquals(operation.getDescription(), getStringValue(expectedOperation, "description"));
@@ -354,6 +377,7 @@ public class OpenAPISpecificationDeserializerTest {
 
     private void assertResponseIsCorrect(Response response, JsonObject expectedResponse) {
         if (expectedResponse != null) {
+            Assert.assertNotNull(response);
             Assert.assertEquals(response.getDescription(), getStringValue(expectedResponse, "description"));
 
             assertHeadersIsCorrect(response.getHeaders(), expectedResponse.getAsJsonObject("headers"));
@@ -388,6 +412,7 @@ public class OpenAPISpecificationDeserializerTest {
 
     private void assertComponentsIsCorrect(Components components, JsonObject expectedComponents) {
         if (expectedComponents != null) {
+            Assert.assertNotNull(components);
             assertSchemasIsCorrect(components.getSchemas(), expectedComponents.getAsJsonObject("schemas"));
             assertResponsesIsCorrect(components.getResponses(), expectedComponents.getAsJsonObject("responses"));
             assertParametersIsCorrect(components.getParameters(), expectedComponents.getAsJsonObject("parameters"));
@@ -428,6 +453,7 @@ public class OpenAPISpecificationDeserializerTest {
 
     private void assertOAuthFlowIsCorrect(OAuthFlow flow, JsonObject expectedFlow) {
         if (expectedFlow != null) {
+            Assert.assertNotNull(flow);
             Assert.assertEquals(flow.getAuthorizationUrl(), getStringValue(expectedFlow, "authorizationUrl"));
             Assert.assertEquals(flow.getTokenUrl(), getStringValue(expectedFlow, "tokenUrl"));
             Assert.assertEquals(flow.getRefreshUrl(), getStringValue(expectedFlow, "tokenUrl"));
@@ -446,7 +472,7 @@ public class OpenAPISpecificationDeserializerTest {
     }
 
     private void assertSchemaIsCorrect(Schema schema, JsonObject expectedSchema) {
-        Assert.fail("Not implemented");
+        softAssert.fail("Not implemented");
     }
 
     private void assertSecurityIsCorrect(SecurityRequirement[] securityRequirements, JsonArray expectedSecurityRequirements) {
@@ -470,6 +496,7 @@ public class OpenAPISpecificationDeserializerTest {
 
     private void assertExternalDocsIsCorrect(ExternalDocumentation externalDocumentation, JsonObject expectedExternalDocumentation) {
         if (expectedExternalDocumentation != null) {
+            Assert.assertNotNull(externalDocumentation);
             Assert.assertEquals(externalDocumentation.getDescription(), getStringValue(expectedExternalDocumentation, "description"));
             Assert.assertEquals(externalDocumentation.getUrl(), getStringValue(expectedExternalDocumentation, "url"));
         } else {

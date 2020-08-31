@@ -15,15 +15,15 @@ public class Schema extends ReferenceableObject<Schema> {
     private String title;
     private int multipleOf;
     private int maximum;
-    private boolean exclusiveMaximum;
+    private Boolean exclusiveMaximum;
     private int minimum;
-    private boolean exclusiveMinimum;
+    private Boolean exclusiveMinimum;
     private int maxLength;
     private int minLength;
     private String pattern;
     private int maxItems;
     private int minItems;
-    private boolean uniqueItems;
+    private Boolean uniqueItems;
     private int maxProperties;
     private int minProperties;
     private String[] required;
@@ -70,7 +70,7 @@ public class Schema extends ReferenceableObject<Schema> {
     private Schema properties;
 
     /**
-     * Value can be boolean or object. Inline or referenced schema MUST be of a Schema Object and not a standard JSON
+     * Value can be Boolean or object. Inline or referenced schema MUST be of a Schema Object and not a standard JSON
      * Schema. Consistent with JSON Schema, additionalProperties defaults to true.
      */
     private Schema additionalProperties;
@@ -101,7 +101,7 @@ public class Schema extends ReferenceableObject<Schema> {
      * disallow the use of null as a value. A false value leaves the specified or default type unmodified. The default
      * value is false.
      */
-    private boolean nullable;
+    private Boolean nullable;
 
     /**
      * Adds support for polymorphism. The discriminator is an object name that is used to differentiate between other
@@ -115,7 +115,7 @@ public class Schema extends ReferenceableObject<Schema> {
      * readOnly being true and is in the required list, the required will take effect on the response only. A property
      * MUST NOT be marked as both readOnly and writeOnly being true. Default value is false.
      */
-    private boolean readOnly;
+    private Boolean readOnly;
 
     /**
      * Relevant only for Schema "properties" definitions. Declares the property as "write only". Therefore, it MAY
@@ -123,7 +123,7 @@ public class Schema extends ReferenceableObject<Schema> {
      * writeOnly being true and is in the required list, the required will take effect on the request only. A property
      * MUST NOT be marked as both readOnly and writeOnly being true. Default value is false.
      */
-    private boolean writeOnly;
+    private Boolean writeOnly;
 
     /**
      * This MAY be used only on properties schemas. It has no effect on root schemas. Adds additional metadata to
@@ -146,7 +146,7 @@ public class Schema extends ReferenceableObject<Schema> {
     /**
      * Specifies that a schema is deprecated and SHOULD be transitioned out of usage. Default value is false.
      */
-    private boolean deprecated;
+    private Boolean deprecated;
 
     public String getTitle() {
         return title;
@@ -172,11 +172,11 @@ public class Schema extends ReferenceableObject<Schema> {
         this.maximum = maximum;
     }
 
-    public boolean isExclusiveMaximum() {
+    public Boolean isExclusiveMaximum() {
         return exclusiveMaximum;
     }
 
-    public void setExclusiveMaximum(boolean exclusiveMaximum) {
+    public void setExclusiveMaximum(Boolean exclusiveMaximum) {
         this.exclusiveMaximum = exclusiveMaximum;
     }
 
@@ -188,11 +188,11 @@ public class Schema extends ReferenceableObject<Schema> {
         this.minimum = minimum;
     }
 
-    public boolean isExclusiveMinimum() {
+    public Boolean isExclusiveMinimum() {
         return exclusiveMinimum;
     }
 
-    public void setExclusiveMinimum(boolean exclusiveMinimum) {
+    public void setExclusiveMinimum(Boolean exclusiveMinimum) {
         this.exclusiveMinimum = exclusiveMinimum;
     }
 
@@ -236,11 +236,11 @@ public class Schema extends ReferenceableObject<Schema> {
         this.minItems = minItems;
     }
 
-    public boolean isUniqueItems() {
+    public Boolean isUniqueItems() {
         return uniqueItems;
     }
 
-    public void setUniqueItems(boolean uniqueItems) {
+    public void setUniqueItems(Boolean uniqueItems) {
         this.uniqueItems = uniqueItems;
     }
 
@@ -364,11 +364,11 @@ public class Schema extends ReferenceableObject<Schema> {
         this._default = _default;
     }
 
-    public boolean isNullable() {
+    public Boolean isNullable() {
         return nullable;
     }
 
-    public void setNullable(boolean nullable) {
+    public void setNullable(Boolean nullable) {
         this.nullable = nullable;
     }
 
@@ -380,19 +380,19 @@ public class Schema extends ReferenceableObject<Schema> {
         this.discriminator = discriminator;
     }
 
-    public boolean isReadOnly() {
+    public Boolean isReadOnly() {
         return readOnly;
     }
 
-    public void setReadOnly(boolean readOnly) {
+    public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
     }
 
-    public boolean isWriteOnly() {
+    public Boolean isWriteOnly() {
         return writeOnly;
     }
 
-    public void setWriteOnly(boolean writeOnly) {
+    public void setWriteOnly(Boolean writeOnly) {
         this.writeOnly = writeOnly;
     }
 
@@ -420,11 +420,11 @@ public class Schema extends ReferenceableObject<Schema> {
         this.example = example;
     }
 
-    public boolean isDeprecated() {
+    public Boolean isDeprecated() {
         return deprecated;
     }
 
-    public void setDeprecated(boolean deprecated) {
+    public void setDeprecated(Boolean deprecated) {
         this.deprecated = deprecated;
     }
 }
