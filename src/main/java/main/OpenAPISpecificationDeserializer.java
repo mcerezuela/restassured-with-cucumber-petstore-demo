@@ -2,10 +2,7 @@ package main;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import json.CallbackDeserializer;
-import json.PathsDeserializer;
-import json.ReferenceableDeserializer;
-import json.ResponsesDeserializer;
+import json.*;
 import model.*;
 
 public class OpenAPISpecificationDeserializer {
@@ -29,6 +26,8 @@ public class OpenAPISpecificationDeserializer {
         gsonBuilder.registerTypeAdapter(Callback.class, new CallbackDeserializer());
         gsonBuilder.registerTypeAdapter(Responses.class, new ResponsesDeserializer());
         gsonBuilder.registerTypeAdapter(IReferenceable.class, new ReferenceableDeserializer());
+        gsonBuilder.registerTypeAdapter(ServerVariable.class, new ServerVariableDeserializer());
+//        gsonBuilder.registerTypeAdapter(Schema.class, new SchemaDeserializer());
 
         gson = gsonBuilder.create();
     }
