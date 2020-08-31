@@ -69,6 +69,19 @@ public class OpenAPISpecificationDeserializerTest {
         }
     }
 
+    private void assertStringMapsAreEqual(Map<String, String> map, JsonObject expectedMap) {
+        if (expectedMap != null) {
+            Assert.assertEquals(map.size(), expectedMap.size());
+            Assert.assertEquals(map.keySet(), expectedMap.keySet());
+            for (Map.Entry<String, JsonElement> entry : expectedMap.entrySet()) {
+                String key = entry.getKey();
+                Assert.assertEquals(map.get(key), expectedMap.get(key).getAsString());
+            }
+        } else {
+            Assert.assertNull(map);
+        }
+    }
+
     private <T> void assertMapsAreEqual(Map<String, T> map, JsonObject expectedMap, BiConsumer<T, JsonObject> consumer) {
         if (expectedMap != null) {
             Assert.assertEquals(map.size(), expectedMap.size());
@@ -109,11 +122,27 @@ public class OpenAPISpecificationDeserializerTest {
     ) {
         if (referenceable instanceof Parameter) {
             assertParameterIsCorrect((Parameter) referenceable, expectedReferenceable);
+        } else if (referenceable instanceof Header) {
+            assertHeaderIsCorrect((Header) referenceable, expectedReferenceable);
         } else if (referenceable instanceof Schema) {
             assertSchemaIsCorrect((Schema) referenceable, expectedReferenceable);
         } else if (referenceable instanceof RequestBody) {
             assertRequestBodyIsCorrect((RequestBody) referenceable, expectedReferenceable);
+        } else if (referenceable instanceof Response) {
+            assertResponseIsCorrect((Response) referenceable, expectedReferenceable);
+        } else if (referenceable instanceof Link) {
+            assertLinkIsCorrect((Link) referenceable, expectedReferenceable);
+        } else if (referenceable instanceof Callback) {
+            assertCallbackIsCorrect((Callback) referenceable, expectedReferenceable);
+        } else if (referenceable instanceof SecurityScheme) {
+            assertSecuritySchemeIsCorrect((SecurityScheme) referenceable, expectedReferenceable);
+        } else if (referenceable instanceof Example) {
+            assertExampleIsCorrect((Example) referenceable, expectedReferenceable);
         }
+    }
+
+    private void assertExampleIsCorrect(Example example, JsonObject expectedExcample) {
+        Assert.fail("Not implemented");
     }
 
     private void assertOpenapiSpecificationIsCorrect(OpenAPISpecification oas, JsonObject sourceJson) {
@@ -225,6 +254,10 @@ public class OpenAPISpecificationDeserializerTest {
         assertArraysAreEqual(parameters, expectedParameters, this::assertReferenceableIsCorrect);
     }
 
+    private void assertParametersIsCorrect(Map<String, IReferenceable<Parameter>> parametersMap, JsonObject expectedParametersMap) {
+        assertMapsAreEqual(parametersMap, expectedParametersMap, this::assertReferenceableIsCorrect);
+    }
+
     private void assertParameterIsCorrect(Parameter parameter, JsonObject expectedParameter) {
         Assert.assertEquals(parameter.getName(), getStringValue(expectedParameter, "name"));
         Assert.assertEquals(parameter.getIn(), getStringValue(expectedParameter, "in"));
@@ -251,25 +284,148 @@ public class OpenAPISpecificationDeserializerTest {
         assertContentIsCorrect(requestBody.getContent(), expectedRequestBody.getAsJsonObject("content"));
     }
 
+    private void assertRequestBodiesIsCorrect(Map<String, IReferenceable<RequestBody>> requestBodiesMap, JsonObject expectedRequestBodiesMap) {
+        assertMapsAreEqual(requestBodiesMap, expectedRequestBodiesMap, this::assertReferenceableIsCorrect);
+    }
+
     private void assertContentIsCorrect(Map<String, MediaType> mediaType, JsonObject expectedMediaType) {
         assertMapsAreEqual(mediaType, expectedMediaType, this::assertMediaTypeIsCorrect);
     }
 
     private void assertMediaTypeIsCorrect(MediaType mediaType, JsonObject expectedMediaType) {
-        assertReferenceableIsCorrect(mediaType.getSchema(), expectedMediaType.getAsJsonObject("schema"));
+        assertSchemaReferenceableIsCorrect(mediaType.getSchema(), expectedMediaType.getAsJsonObject("schema"));
+        // TODO example and examples
+        assertEncondingsIsCorrect(mediaType.getEncoding(), expectedMediaType.getAsJsonObject("enconding"));
+    }
+
+    private void assertEncondingsIsCorrect(Map<String, Encoding> encodingMap, JsonObject expectedEncodingMap) {
+        assertMapsAreEqual(encodingMap, expectedEncodingMap, this::assertEncondingIsCorrect);
+    }
+
+    private void assertEncondingIsCorrect(Encoding encoding, JsonObject expectedEncoding) {
+        Assert.assertEquals(encoding.getContentType(), getStringValue(expectedEncoding, "contentType"));
+        Assert.assertEquals(encoding.getStyle(), getStringValue(expectedEncoding, "style"));
+        Assert.assertEquals(encoding.isExplode(), getBooleanValue(expectedEncoding, "explode"));
+        Assert.assertEquals(encoding.isAllowReserved(), getBooleanValue(expectedEncoding, "allowReserved"));
+
+        assertHeadersIsCorrect(encoding.getHeaders(), expectedEncoding.getAsJsonObject("headers"));
+    }
+
+    private void assertHeadersIsCorrect(Map<String, IReferenceable<Header>> headersMap, JsonObject expectedHeadersMap) {
+        assertMapsAreEqual(headersMap, expectedHeadersMap, this::assertReferenceableIsCorrect);
+    }
+
+    private void assertHeaderIsCorrect(Header header, JsonObject expectedHeader) {
+        Assert.assertEquals(header.getDescription(), getStringValue(expectedHeader, "description"));
+        Assert.assertEquals(header.isRequired(), getBooleanValue(expectedHeader, "required"));
+        Assert.assertEquals(header.isDeprecated(), getBooleanValue(expectedHeader, "deprecated"));
+        Assert.assertEquals(header.isAllowEmptyValue(), getBooleanValue(expectedHeader, "allowEmptyValue"));
+        Assert.assertEquals(header.getStyle(), getStringValue(expectedHeader, "style"));
+        Assert.assertEquals(header.isExplode(), getBooleanValue(expectedHeader, "explode"));
+        Assert.assertEquals(header.isAllowReserved(), getBooleanValue(expectedHeader, "allowReserved"));
+
+        assertSchemaReferenceableIsCorrect(header.getSchema(), expectedHeader.getAsJsonObject("schema"));
         // TODO example and examples
     }
 
     private void assertResponsesIsCorrect(Responses responses, JsonObject expectedResponses) {
-        Assert.fail("Not implemented");
+        assertReferenceableIsCorrect(responses.getDefault(), expectedResponses.getAsJsonObject("default"));
+        JsonObject expectedResponsesCopy = expectedResponses.deepCopy();
+        expectedResponsesCopy.remove("default");
+        assertMapsAreEqual(responses.getResponseMap(), expectedResponsesCopy, this::assertReferenceableIsCorrect);
     }
 
-    private void assertCallbacksIsCorrect(Map<String, IReferenceable<Callback>> callbacks, JsonObject expectedCallbacks) {
-        Assert.fail("Not implemented");
+    private void assertResponsesIsCorrect(Map<String, IReferenceable<Response>> responsesMap, JsonObject expectedResponsesMap) {
+        assertMapsAreEqual(responsesMap, expectedResponsesMap, this::assertReferenceableIsCorrect);
+    }
+
+    private void assertResponseIsCorrect(Response response, JsonObject expectedResponse) {
+        if (expectedResponse != null) {
+            Assert.assertEquals(response.getDescription(), getStringValue(expectedResponse, "description"));
+
+            assertHeadersIsCorrect(response.getHeaders(), expectedResponse.getAsJsonObject("headers"));
+            assertContentIsCorrect(response.getContent(), expectedResponse.getAsJsonObject("content"));
+            assertLinksIsCorrect(response.getLinks(), expectedResponse.getAsJsonObject("link"));
+        } else {
+            Assert.assertNull(response);
+        }
+    }
+
+    private void assertLinksIsCorrect(Map<String, IReferenceable<Link>> linksMap, JsonObject expectedLinksMap) {
+        assertMapsAreEqual(linksMap, expectedLinksMap, this::assertReferenceableIsCorrect);
+    }
+
+    private void assertLinkIsCorrect(Link link, JsonObject expectedLink) {
+        Assert.assertEquals(link.getOperationRef(), getStringValue(expectedLink, "operationRef"));
+        Assert.assertEquals(link.getOperationId(), getStringValue(expectedLink, "operationId"));
+        Assert.assertEquals(link.getDescription(), getStringValue(expectedLink, "description"));
+
+        assertServerIsCorrect(link.getServer(), expectedLink.getAsJsonObject("server"));
+
+        // TODO parameters and requestBody
+    }
+
+    private void assertCallbacksIsCorrect(Map<String, IReferenceable<Callback>> callbacksMap, JsonObject expectedCallbacksMap) {
+        assertMapsAreEqual(callbacksMap, expectedCallbacksMap, this::assertReferenceableIsCorrect);
+    }
+
+    private void assertCallbackIsCorrect(Callback callback, JsonObject expectedCallback) {
+        assertMapsAreEqual(callback.getPathMap(), expectedCallback, this::assertPathItemIsCorrect);
     }
 
     private void assertComponentsIsCorrect(Components components, JsonObject expectedComponents) {
-        Assert.fail("Not implemented");
+        if (expectedComponents != null) {
+            assertSchemasIsCorrect(components.getSchemas(), expectedComponents.getAsJsonObject("schemas"));
+            assertResponsesIsCorrect(components.getResponses(), expectedComponents.getAsJsonObject("responses"));
+            assertParametersIsCorrect(components.getParameters(), expectedComponents.getAsJsonObject("parameters"));
+            assertRequestBodiesIsCorrect(components.getRequestBodies(), expectedComponents.getAsJsonObject("requestBodies"));
+            assertHeadersIsCorrect(components.getHeaders(), expectedComponents.getAsJsonObject("headers"));
+            assertSecuritySchemesIsCorrect(components.getSecuritySchemes(), expectedComponents.getAsJsonObject("securitySchemes"));
+            assertLinksIsCorrect(components.getLinks(), expectedComponents.getAsJsonObject("links"));
+            assertCallbacksIsCorrect(components.getCallbacks(), expectedComponents.getAsJsonObject("callbacks"));
+
+            // TODO examples
+        } else {
+            Assert.assertNull(components);
+        }
+    }
+
+    private void assertSecuritySchemesIsCorrect(Map<String, IReferenceable<SecurityScheme>> securitySchemesMap, JsonObject expectedSecuritySchemesMap) {
+        assertMapsAreEqual(securitySchemesMap, expectedSecuritySchemesMap, this::assertReferenceableIsCorrect);
+    }
+
+    private void assertSecuritySchemeIsCorrect(SecurityScheme securityScheme, JsonObject expectedSecurityScheme) {
+        Assert.assertEquals(securityScheme.getType(), getStringValue(expectedSecurityScheme, "type"));
+        Assert.assertEquals(securityScheme.getDescription(), getStringValue(expectedSecurityScheme, "description"));
+        Assert.assertEquals(securityScheme.getName(), getStringValue(expectedSecurityScheme, "name"));
+        Assert.assertEquals(securityScheme.getIn(), getStringValue(expectedSecurityScheme, "in"));
+        Assert.assertEquals(securityScheme.getScheme(), getStringValue(expectedSecurityScheme, "scheme"));
+        Assert.assertEquals(securityScheme.getBearerFormat(), getStringValue(expectedSecurityScheme, "bearerFormat"));
+        Assert.assertEquals(securityScheme.getOpenIdConnectUrl(), getStringValue(expectedSecurityScheme, "openIdConnectUrl"));
+
+        assertOAuthFlowsIsCorrect(securityScheme.getFlows(), expectedSecurityScheme.getAsJsonObject("flows"));
+    }
+
+    private void assertOAuthFlowsIsCorrect(OAuthFlows flows, JsonObject expectedFlows) {
+        assertOAuthFlowIsCorrect(flows.getImplicit(), expectedFlows.getAsJsonObject("implicit"));
+        assertOAuthFlowIsCorrect(flows.getPassword(), expectedFlows.getAsJsonObject("password"));
+        assertOAuthFlowIsCorrect(flows.getClientCredentials(), expectedFlows.getAsJsonObject("clientCredentials"));
+        assertOAuthFlowIsCorrect(flows.getAuthorizationCode(), expectedFlows.getAsJsonObject("authorizationCode"));
+    }
+
+    private void assertOAuthFlowIsCorrect(OAuthFlow flow, JsonObject expectedFlow) {
+        if (expectedFlow != null) {
+            Assert.assertEquals(flow.getAuthorizationUrl(), getStringValue(expectedFlow, "authorizationUrl"));
+            Assert.assertEquals(flow.getTokenUrl(), getStringValue(expectedFlow, "tokenUrl"));
+            Assert.assertEquals(flow.getRefreshUrl(), getStringValue(expectedFlow, "tokenUrl"));
+            assertStringMapsAreEqual(flow.getScopes(), expectedFlow.getAsJsonObject("scopes"));
+        } else {
+            Assert.assertNull(flow);
+        }
+    }
+
+    private void assertSchemasIsCorrect(Map<String, IReferenceable<Schema>> schemasMap, JsonObject expectedSchemasMap) {
+        assertMapsAreEqual(schemasMap, expectedSchemasMap, this::assertReferenceableIsCorrect);
     }
 
     private void assertSchemaReferenceableIsCorrect(IReferenceable<Schema> schema, JsonObject expectedSchema) {

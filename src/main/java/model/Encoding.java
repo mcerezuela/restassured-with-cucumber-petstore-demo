@@ -38,14 +38,14 @@ public class Encoding {
      * form, the default value is true. For all other styles, the default value is false. This property SHALL be
      * ignored if the request body media type is not application/x-www-form-urlencoded.
      */
-    private boolean explode;
+    private Boolean explode;
 
     /**
      * Determines whether the parameter value SHOULD allow reserved characters, as defined by
      * RFC3986 :/?#[]@!$&'()*+,;= to be included without percent-encoding. The default value is false. This property
      * SHALL be ignored if the request body media type is not application/x-www-form-urlencoded.
      */
-    private boolean allowReserved;
+    private Boolean allowReserved;
 
     public String getContentType() {
         return contentType;
@@ -71,19 +71,19 @@ public class Encoding {
         this.style = style;
     }
 
-    public boolean isExplode() {
+    public Boolean isExplode() {
         return explode;
     }
 
-    public void setExplode(boolean explode) {
+    public void setExplode(Boolean explode) {
         this.explode = explode;
     }
 
-    public boolean isAllowReserved() {
+    public Boolean isAllowReserved() {
         return allowReserved;
     }
 
-    public void setAllowReserved(boolean allowReserved) {
+    public void setAllowReserved(Boolean allowReserved) {
         this.allowReserved = allowReserved;
     }
 }
