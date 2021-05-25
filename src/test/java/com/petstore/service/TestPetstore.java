@@ -8,7 +8,7 @@ import org.testng.Assert;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-public class PetstoreTest extends TestCase {
+public class TestPetstore extends TestCase {
 
     Petstore  petstore;
 
