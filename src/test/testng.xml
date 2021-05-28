@@ -4,6 +4,7 @@
     <test name="PetstoreTest" >
         <classes>
             <class name="com.petstore.service.TestPetstore" />
+            <class name="com.petstore.service.TestPetstoreService" />
         </classes>
     </test>
 </suite>

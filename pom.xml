@@ -12,9 +12,16 @@
     <url>http://maven.apache.org</url>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>1.9</maven.compiler.source>
+        <maven.compiler.target>1.9</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <org.jsonschema2pojo.version>1.1.1</org.jsonschema2pojo.version>
+        <restassured.version>3.3.0</restassured.version>
+        <org.apache.maven.plugins.version>2.18.1</org.apache.maven.plugins.version>
+        <junit.version>4.12</junit.version>
+        <jackson.databind.version>2.9.8</jackson.databind.version>
+        <commons-lang.version>2.4</commons-lang.version>
+        <org.testng.version>6.14.3</org.testng.version>
     </properties>
     <build>
         <plugins>
@@ -23,18 +30,18 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>1.9</source>
-                    <target>1.9</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jsonschema2pojo</groupId>
                 <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-                <version>1.1.1</version>
+                <version>${org.jsonschema2pojo.version}</version>
                 <configuration>
-                    <sourceDirectory>${basedir}/src/test/resources/swagger</sourceDirectory>
+                    <sourceDirectory>${basedir}/src/test/resources/pet</sourceDirectory>
                     <sourceType>json</sourceType>
-                    <targetPackage>com.petstore.service</targetPackage>
+                    <targetPackage>com.petstore.entities.pet</targetPackage>
                     <useTitleAsClassname>true</useTitleAsClassname>
                     <annotationStyle>jackson2</annotationStyle>
                     <useDoubleNumbers>true</useDoubleNumbers>
@@ -51,7 +58,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.18.1</version>
+                <version>${org.apache.maven.plugins.version}</version>
                 <configuration>
                     <parallel>methods</parallel>
                     <threadCount>1</threadCount>
@@ -64,30 +71,31 @@
     </build>
     <dependencies>
         <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${restassured.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
-            <version>2.4</version>
+            <version>${commons-lang.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.10.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-yaml</artifactId>
-            <version>2.11.1</version>
+            <version>${jackson.databind.version}</version>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>6.14.3</version>
+            <version>${org.testng.version}</version>
         </dependency>
     </dependencies>
 </project>
