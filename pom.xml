@@ -41,7 +41,7 @@
                 <configuration>
                     <sourceDirectory>${basedir}/src/test/resources/pet</sourceDirectory>
                     <sourceType>json</sourceType>
-                    <targetPackage>com.petstore.entities.pet</targetPackage>
+                    <targetPackage>com.petstore.components.schemas.pet</targetPackage>
                     <useTitleAsClassname>true</useTitleAsClassname>
                     <annotationStyle>jackson2</annotationStyle>
                     <useDoubleNumbers>true</useDoubleNumbers>

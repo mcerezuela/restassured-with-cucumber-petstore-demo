@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.petstore.entities.endpoints.EndPointsWrapper;
-import com.petstore.service.Petstore;
+import com.petstore.root.Petstore;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,6 +15,7 @@ import java.util.Map;
 
 public class PetStoreUtils {
     private static boolean debug = false;
+    private static EndPointsWrapper endPointsWrapper;
     public static Petstore getReferencePetStore() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         TypeReference<Petstore> ref = new TypeReference<>() {
@@ -24,7 +25,7 @@ public class PetStoreUtils {
     }
 
     public static EndPointsWrapper extractEndPoints(Object elementToSearch) {
-        EndPointsWrapper endPointsWrapper = new EndPointsWrapper();
+        endPointsWrapper = new EndPointsWrapper();
         endPointsWrapper.setEndpoints(getFieldNamesJsonProperties(elementToSearch));
         return endPointsWrapper;
     }

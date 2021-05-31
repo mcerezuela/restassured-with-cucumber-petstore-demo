@@ -3,8 +3,8 @@
 <suite name="Suite1" verbose="1" >
     <test name="PetstoreTest" >
         <classes>
-            <class name="com.petstore.service.TestPetstore" />
-            <class name="com.petstore.service.TestPetstoreService" />
+            <class name="com.petstore.root.TestPetstore" />
+            <class name="com.petstore.root.TestPetstoreService" />
         </classes>
     </test>
 </suite>

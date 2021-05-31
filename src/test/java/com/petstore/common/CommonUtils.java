@@ -2,12 +2,12 @@ package com.petstore.common;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.petstore.PetStoreUtils;
+import com.petstore.entities.endpoints.EndPointsWrapper;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.internal.mapping.Jackson2Mapper;
-import io.restassured.mapper.factory.Jackson2ObjectMapperFactory;
 import io.restassured.specification.RequestSpecification;
 
-import java.lang.reflect.Type;
 
 public class CommonUtils {
 
@@ -22,10 +22,10 @@ public class CommonUtils {
         });
     }
 
-    public void setSpecs() {
+    public void setSpecs(String url) {
         build = new RequestSpecBuilder();
         build.setBaseUri("https://petstore3.swagger.io");
-        build.setBasePath("/api/v3");
+        build.setBasePath(url);
         build.setContentType("application/json");
         rspec = build.build();
     }
