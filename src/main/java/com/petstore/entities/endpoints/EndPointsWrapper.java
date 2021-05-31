@@ -13,16 +13,8 @@ public class EndPointsWrapper {
         endpoints = new HashMap<>();
     }
 
-    public Map<String, String> getEndpoints() {
-        return endpoints;
-    }
-
     public void setEndpoints(Map<String, String> endpoints) {
         this.endpoints = endpoints;
-    }
-
-    public void add(String fieldName, String endpointValue) {
-        endpoints.put(fieldName,endpointValue);
     }
 
     public String getEndpointValue(String methodName){

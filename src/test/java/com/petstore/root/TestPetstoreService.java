@@ -22,6 +22,7 @@ public class TestPetstoreService {
     EndPointsWrapper endPointsWrapper;
     CommonUtils commonUtils;
     List<Parameter> parameters;
+    PetResponseEntity[] AllPets;
 
     public TestPetstoreService() {
         try {
