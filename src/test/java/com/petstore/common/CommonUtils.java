@@ -2,8 +2,6 @@ package com.petstore.common;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.petstore.PetStoreUtils;
-import com.petstore.entities.endpoints.EndPointsWrapper;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.internal.mapping.Jackson2Mapper;
 import io.restassured.specification.RequestSpecification;
