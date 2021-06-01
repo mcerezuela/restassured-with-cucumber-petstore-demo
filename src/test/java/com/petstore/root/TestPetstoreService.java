@@ -103,6 +103,13 @@ public class TestPetstoreService {
         sendRequestsForPetsByTags(allPetsList.getListOfPetsWithNonCeroTags());
     }
 
+    @Test
+    public void postNewPets() {
+        requestAllPetsAvailability();
+        PetResponseEntity newPet = allPetsList.createNewPet();
+        Assert.assertTrue(postRequestCreatePet(newPet,"pet").equals(newPet));
+    }
+
     private void sendRequestsForPetsByTags(ArrayList<PetResponseEntity> allPetsWithTags) {
         String parameterName = getPetPetFindByTags().get(0).getName();
         for(PetResponseEntity petResponseEntity :allPetsWithTags){
@@ -135,6 +142,19 @@ public class TestPetstoreService {
                 statusCode(200).
                 extract().
                 as(PetResponseEntity[].class);
+    }
+
+    private PetResponseEntity postRequestCreatePet(PetResponseEntity petResponseEntity,String operationId) {
+        String endpoint = endPointsWrapper.getEndpointValue(operationId);
+        return given().
+                spec(commonUtils.getSpecs()).
+                body(petResponseEntity).
+                when().
+                post(endpoint).
+                then().
+                statusCode(200).
+                extract().
+                as(PetResponseEntity.class);
     }
 
     private List<Parameter> getPetFindByStatusParameters() {
