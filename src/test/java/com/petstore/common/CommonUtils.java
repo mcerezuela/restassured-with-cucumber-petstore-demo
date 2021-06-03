@@ -2,9 +2,12 @@ package com.petstore.common;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.petstore.components.schemas.pet.PetResponseEntity;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.internal.mapping.Jackson2Mapper;
 import io.restassured.specification.RequestSpecification;
+
+import static io.restassured.RestAssured.given;
 
 
 public class CommonUtils {
@@ -30,5 +33,65 @@ public class CommonUtils {
 
     public RequestSpecification getSpecs() {
         return rspec;
+    }
+
+    public PetResponseEntity[] sendGetPetRequestQueryParam(String parameterName, String parameterValue,
+                                                           String operationId) {
+        return given().
+                spec(this.getSpecs()).
+                queryParam(parameterName, parameterValue).
+                when().
+                get(operationId).
+                then().
+                statusCode(200).
+                extract().
+                as(PetResponseEntity[].class);
+    }
+    public PetResponseEntity sendGetPetRequestPathParams(String parameterName, String parameterValue,
+                                                   String operationId) {
+        return given().
+                spec(this.getSpecs()).
+                pathParam(parameterName,parameterValue).
+                when().
+                get(operationId).
+                then().
+                statusCode(200).
+                extract().
+                as(PetResponseEntity.class);
+    }
+
+    public Object getRequest(Class<?> tClass, String operationId){
+        return given().
+                spec(this.getSpecs()).
+                when().
+                get(operationId).
+                then().
+                statusCode(200).
+                extract().
+                as(tClass);
+    }
+
+    public Object postRequest(Object entity, Class<PetResponseEntity> tClass, String operationId) {
+        return given().
+                spec(this.getSpecs()).
+                body(entity).
+                when().
+                post(operationId).
+                then().
+                statusCode(200).
+                extract().
+                as(tClass);
+    }
+
+    public Object putRequest(Object entity, Class<?> tClass, String operationId) {
+        return given().
+                spec(this.getSpecs()).
+                body(entity).
+                when().
+                put(operationId).
+                then().
+                statusCode(200).
+                extract().
+                as(tClass);
     }
 }
