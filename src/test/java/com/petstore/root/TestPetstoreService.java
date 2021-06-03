@@ -16,9 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-import static io.restassured.RestAssured.given;
-
 public class TestPetstoreService {
     Petstore referencePetStore;
     EndPointsWrapper endPointsWrapper;
@@ -50,25 +47,13 @@ public class TestPetstoreService {
 
     @Test
     public void requestOpenAPIFromService() {
-        given().
-                spec(commonUtils.getSpecs()).
-                when().
-                get("/openapi.json").
-                then().
-                assertThat().
-                statusCode(200);
+        Assert.assertNotNull(commonUtils.getRequest(Object.class,"/openapi.json"));
     }
 
     @Test
     public void compareOpenAPIFromServiceWithBaseLine() {
-        Petstore petstore =
-                given().
-                        spec(commonUtils.getSpecs()).
-                        when().
-                        get("/openapi.json").
-                        as(Petstore.class);
+        Petstore petstore = (Petstore) commonUtils.getRequest(Petstore.class,"/openapi.json");
         Assert.assertEquals(petstore, referencePetStore);
-
     }
 
     @Test
@@ -107,16 +92,41 @@ public class TestPetstoreService {
     public void postNewPets() {
         requestAllPetsAvailability();
         PetResponseEntity newPet = allPetsList.createNewPet();
-        Assert.assertTrue(postRequestCreatePet(newPet,"pet").equals(newPet));
+        Assert.assertEquals(commonUtils.postRequest(newPet,PetResponseEntity.class ,"pet"),newPet);
+    }
+
+    @Test
+    public void putPet() {
+        requestAllPetsAvailability();
+        PetResponseEntity randomPet = allPetsList.modifyRandomPet();
+        Assert.assertEquals(randomPet,commonUtils.putRequest(randomPet,PetResponseEntity.class ,"pet"));
+    }
+
+    @Test
+    public void getPetsById() {
+        requestAllPetsAvailability();
+        PetResponseEntity randomPet = allPetsList.getRandomPet();
+        Assert.assertEquals(randomPet,commonUtils.sendGetPetRequestPathParams("petId",
+                randomPet.getId().toString(),endPointsWrapper.getEndpointValue("petPetId")));
     }
 
     private void sendRequestsForPetsByTags(ArrayList<PetResponseEntity> allPetsWithTags) {
         String parameterName = getPetPetFindByTags().get(0).getName();
+        String latestTag ="";
         for(PetResponseEntity petResponseEntity :allPetsWithTags){
-            Assert.assertNotNull(senGetRequestQuery(parameterName,petResponseEntity.getTags()
-            .get(0).getName(),"petFindByTags"));
+            if(!isRepeatedTagName(latestTag,petResponseEntity)){
+                latestTag = petResponseEntity.getTags().get(0).getName();
+                Assert.assertNotNull(
+                        commonUtils.sendGetPetRequestQueryParam(parameterName,
+                                latestTag,
+                                endPointsWrapper.getEndpointValue("petFindByTags")));
+            }
         }
 
+    }
+
+    private boolean isRepeatedTagName(String latestTag, PetResponseEntity petResponseEntity) {
+        return latestTag.equals(petResponseEntity.getTags().get(0).getName());
     }
 
     private PetResponseEntity[] getPetsBystatus(int statusIndex) {
@@ -127,34 +137,7 @@ public class TestPetstoreService {
     }
 
     private PetResponseEntity[] getRequestPetsBystatus(String parameterName, String parameterValue) {
-        return senGetRequestQuery(parameterName, parameterValue,"PetFindByStatus");
-    }
-
-    private PetResponseEntity[] senGetRequestQuery(String parameterName, String parameterValue,
-                                                   String operationId) {
-        String endpoint = endPointsWrapper.getEndpointValue(operationId);
-        return given().
-                spec(commonUtils.getSpecs()).
-                queryParam(parameterName, parameterValue).
-                when().
-                get(endpoint).
-                then().
-                statusCode(200).
-                extract().
-                as(PetResponseEntity[].class);
-    }
-
-    private PetResponseEntity postRequestCreatePet(PetResponseEntity petResponseEntity,String operationId) {
-        String endpoint = endPointsWrapper.getEndpointValue(operationId);
-        return given().
-                spec(commonUtils.getSpecs()).
-                body(petResponseEntity).
-                when().
-                post(endpoint).
-                then().
-                statusCode(200).
-                extract().
-                as(PetResponseEntity.class);
+        return commonUtils.sendGetPetRequestQueryParam(parameterName, parameterValue,endPointsWrapper.getEndpointValue("PetFindByStatus"));
     }
 
     private List<Parameter> getPetFindByStatusParameters() {
