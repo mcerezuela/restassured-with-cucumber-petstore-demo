@@ -21,12 +21,15 @@ public class AllPetsWrapper {
     }
 
     public ArrayList<PetResponseEntity> getListOfPetsWithNonCeroTags() {
-        List<PetResponseEntity> petsWithAtLeastOneTags = new ArrayList<>();
+        ArrayList<PetResponseEntity> petsWithAtLeastOneTags = new ArrayList<>();
         for (PetResponseEntity petResponseEntity : petList) {
-            if (petResponseEntity.getTags().size() > 0) petsWithAtLeastOneTags.add(petResponseEntity);
+            if (isAValidTag(petResponseEntity)) {
+                petsWithAtLeastOneTags.add(petResponseEntity);
+            }
         }
-        return (ArrayList<PetResponseEntity>) petsWithAtLeastOneTags;
+        return petsWithAtLeastOneTags;
     }
+
 
     public PetResponseEntity createNewPet() {
         PetResponseEntity newPet = new PetResponseEntity();
@@ -40,11 +43,32 @@ public class AllPetsWrapper {
         return newPet;
     }
 
+    public PetResponseEntity modifyRandomPet() {
+        PetResponseEntity randomPet = getRandomPet();
+        if(debug)System.out.println("Pet To Modify: "+randomPet);
+        randomPet.setCategory(petList.get(generateRandomNumber(petList.size(),0)).getCategory());
+        randomPet.setName(petList.get(generateRandomNumber(petList.size(),0)).getName());
+        randomPet.setPhotoUrls(petList.get(generateRandomNumber(petList.size(),0)).getPhotoUrls());
+        randomPet.setTags(petList.get(generateRandomNumber(petList.size(),0)).getTags());
+        randomPet.setStatus(petList.get(generateRandomNumber(petList.size(),0)).getStatus());
+        if(debug)System.out.println("Pet Modified: "+randomPet);
+        return randomPet;
+    }
+
+    public PetResponseEntity getRandomPet() {
+        return petList.get(generateRandomNumber(petList.size(),0));
+    }
+
     private int generateRandomNumber(int max,int min){
         Random random = new Random();
         int num = random.nextInt((max - min));
         if(debug)System.out.println("NUMBER: "+num);
         return num;
+    }
+
+    public boolean isAValidTag(PetResponseEntity petResponseEntity) {
+        return (petResponseEntity.getTags().size() > 0) &&
+                (!(petResponseEntity.getTags().get(0).getName() ==null));
     }
 
 }
