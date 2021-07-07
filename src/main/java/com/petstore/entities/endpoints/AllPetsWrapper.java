@@ -1,10 +1,13 @@
 package com.petstore.entities.endpoints;
 
+import com.petstore.PetStoreUtils;
 import com.petstore.components.schemas.pet.PetResponseEntity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 
@@ -71,4 +74,8 @@ public class AllPetsWrapper {
                 (!(petResponseEntity.getTags().get(0).getName() ==null));
     }
 
+    public Map<String, String> getNameAndStatusFromPet(PetResponseEntity randomPet) {
+        Map<String, String> fieldsNamesMap = PetStoreUtils.getFieldNamesJsonProperties(randomPet);
+        return new HashMap<>();
+    }
 }

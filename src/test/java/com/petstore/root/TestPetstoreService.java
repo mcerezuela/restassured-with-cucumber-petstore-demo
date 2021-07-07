@@ -14,7 +14,9 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TestPetstoreService {
     Petstore referencePetStore;
@@ -108,6 +110,13 @@ public class TestPetstoreService {
         PetResponseEntity randomPet = allPetsList.getRandomPet();
         Assert.assertEquals(randomPet,commonUtils.sendGetPetRequestPathParams("petId",
                 randomPet.getId().toString(),endPointsWrapper.getEndpointValue("petPetId")));
+    }
+
+    @Test
+    public void postPetsById() {
+        requestAllPetsAvailability();
+        PetResponseEntity randomPet = allPetsList.getRandomPet();
+        Map<String, String> pathParamsMap = allPetsList.getNameAndStatusFromPet(randomPet);
     }
 
     private void sendRequestsForPetsByTags(ArrayList<PetResponseEntity> allPetsWithTags) {

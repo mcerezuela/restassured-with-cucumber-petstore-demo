@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PetStoreUtils {
-    private static boolean debug = false;
+    private static boolean debug = true;
     private static EndPointsWrapper endPointsWrapper;
     public static Petstore getReferencePetStore() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
@@ -30,7 +30,7 @@ public class PetStoreUtils {
         return endPointsWrapper;
     }
 
-    private static Map<String, String> getFieldNamesJsonProperties(Object elementToSearch) {
+    public static Map<String, String> getFieldNamesJsonProperties(Object elementToSearch) {
         Map<String, String> mapOfFieldNamesJsonProperties = new HashMap<>();
         Class<?> objClass = elementToSearch.getClass();
         Field[] fields = objClass.getDeclaredFields();

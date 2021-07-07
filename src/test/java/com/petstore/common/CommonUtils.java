@@ -7,6 +7,8 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.internal.mapping.Jackson2Mapper;
 import io.restassured.specification.RequestSpecification;
 
+import java.util.Map;
+
 import static io.restassured.RestAssured.given;
 
 
@@ -35,11 +37,11 @@ public class CommonUtils {
         return rspec;
     }
 
-    public PetResponseEntity[] sendGetPetRequestQueryParam(String parameterName, String parameterValue,
+    public PetResponseEntity[] sendGetPetRequestQueryParam(String queryParamName, String queryParamValue,
                                                            String operationId) {
         return given().
                 spec(this.getSpecs()).
-                queryParam(parameterName, parameterValue).
+                queryParam(queryParamName, queryParamValue).
                 when().
                 get(operationId).
                 then().
@@ -47,11 +49,11 @@ public class CommonUtils {
                 extract().
                 as(PetResponseEntity[].class);
     }
-    public PetResponseEntity sendGetPetRequestPathParams(String parameterName, String parameterValue,
+    public PetResponseEntity sendGetPetRequestPathParams(String pathParamName, String pathParamValue,
                                                    String operationId) {
         return given().
                 spec(this.getSpecs()).
-                pathParam(parameterName,parameterValue).
+                pathParam(pathParamName,pathParamValue).
                 when().
                 get(operationId).
                 then().
@@ -82,6 +84,22 @@ public class CommonUtils {
                 extract().
                 as(tClass);
     }
+
+    public Object postRequestWithPathAndQueryParams(Class<PetResponseEntity> tClass, String operationId,
+                                                    String queryParamName, String queryParamValue,
+                                                    Map<String, ?> pathParamMaps) {
+        return given().
+                spec(this.getSpecs()).
+                queryParam(queryParamName, queryParamValue).
+                pathParams(pathParamMaps).
+                when().
+                post(operationId).
+                then().
+                statusCode(200).
+                extract().
+                as(tClass);
+    }
+
 
     public Object putRequest(Object entity, Class<?> tClass, String operationId) {
         return given().
